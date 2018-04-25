@@ -77,11 +77,7 @@ ExtDef: Specifier ExtDecList SEMI {
 	$$=generateNode(0,$1->line,"ExtDef","",$1,NULL); 
 	addNext($1,$2);
 	addNext($2,$3);
-}
-| error SEMI {hasError=1;}
-| Specifier error SEMI {hasError=1;}
-| Specifier error {hasError=1;}
-| Specifier ExtDecList error {hasError=1;};
+};
 ExtDecList: VarDec {
 	$$=generateNode(0,$1->line,"ExtDecList","",$1,NULL); 
 }
@@ -326,7 +322,8 @@ Exp: Exp ASSIGNOP Exp {
 	$$=generateNode(0,$1->line,"Exp","",$1,NULL); 
 }
 | Exp LB error RB {hasError=1;} 
-| ID LP error RP {hasError=1;};
+| ID LP error RP {hasError=1;}
+| Exp error ID {hasError=1;};
 Args: Exp COMMA Args {
 	$$=generateNode(0,$1->line,"Args","",$1,NULL); 
 	addNext($1,$2);

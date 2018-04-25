@@ -313,7 +313,8 @@ Exp: Exp ASSIGNOP Exp {
 	$$=generateNode(0,$1->line,"Exp","",$1,NULL); 
 }
 | Exp LB error RB {hasError=1;} 
-| ID LP error RP {hasError=1;};
+| ID LP error RP {hasError=1;}
+| Exp error ID {hasError=1;};
 Args: Exp COMMA Args {
 	$$=generateNode(0,$1->line,"Args","",$1,NULL); 
 	addNext($1,$2);
