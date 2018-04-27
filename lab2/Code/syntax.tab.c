@@ -68,7 +68,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include"lex.yy.c"
-int hasError=0;
+int hasError=0;//语法错误
 #line 9 "./syntax.y" /* yacc.c:339  */
 
 struct Node{

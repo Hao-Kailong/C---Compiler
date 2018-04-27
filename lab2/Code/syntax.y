@@ -3,7 +3,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include"lex.yy.c"
-int hasError=0;
+int hasError=0;//语法错误
 %}
 
 %{
