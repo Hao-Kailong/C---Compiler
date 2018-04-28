@@ -519,20 +519,18 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "./lexical.l"
 #line 2 "./lexical.l"
-#include<string.h>
 #include"syntax.tab.h"
 #include"tree.h"
-extern int hasError;
-#line 526 "./lex.yy.c"
-#line 9 "./lexical.l"
+#line 524 "./lex.yy.c"
+#line 7 "./lexical.l"
 int yycolumn = 1;
 #define YY_USER_ACTION \
 yylloc.first_line = yylloc.last_line = yylineno; \
 yylloc.first_column = yycolumn; \
 yylloc.last_column = yycolumn + yyleng - 1; \
 yycolumn += yyleng;
-#line 534 "./lex.yy.c"
-#line 535 "./lex.yy.c"
+#line 532 "./lex.yy.c"
+#line 533 "./lex.yy.c"
 
 #define INITIAL 0
 
@@ -749,9 +747,9 @@ YY_DECL
 		}
 
 	{
-#line 51 "./lexical.l"
+#line 49 "./lexical.l"
 
-#line 754 "./lex.yy.c"
+#line 752 "./lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -820,32 +818,32 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 52 "./lexical.l"
+#line 50 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"STRUCT","",NULL,NULL);return STRUCT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 53 "./lexical.l"
+#line 51 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"RETURN","",NULL,NULL);return RETURN;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 54 "./lexical.l"
+#line 52 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"IF","",NULL,NULL);return IF;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 55 "./lexical.l"
+#line 53 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"ELSE","",NULL,NULL);return ELSE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 56 "./lexical.l"
+#line 54 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"WHILE","",NULL,NULL);return WHILE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 57 "./lexical.l"
+#line 55 "./lexical.l"
 {
 yylval.NodeStar=generateNode(0,yylineno,"TYPE",yytext,NULL,NULL);
 return TYPE;
@@ -853,7 +851,7 @@ return TYPE;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 61 "./lexical.l"
+#line 59 "./lexical.l"
 {
 yylval.NodeStar=generateNode(atoi(yytext),yylineno,"INT",yytext,NULL,NULL);
 return INT;
@@ -861,7 +859,7 @@ return INT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 65 "./lexical.l"
+#line 63 "./lexical.l"
 {
 yylval.NodeStar=generateNode(atof(yytext),yylineno,"FLOAT",yytext,NULL,NULL);
 return FLOAT;
@@ -869,7 +867,7 @@ return FLOAT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 69 "./lexical.l"
+#line 67 "./lexical.l"
 {
 yylval.NodeStar=generateNode(0,yylineno,"ID",yytext,NULL,NULL);
 return ID; 
@@ -877,7 +875,7 @@ return ID;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 73 "./lexical.l"
+#line 71 "./lexical.l"
 {
 yylval.NodeStar=generateNode(0,yylineno,"RELOP",yytext,NULL,NULL);
 return RELOP; 
@@ -885,123 +883,123 @@ return RELOP;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 77 "./lexical.l"
+#line 75 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"SEMI","",NULL,NULL);return SEMI;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 78 "./lexical.l"
+#line 76 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"COMMA","",NULL,NULL);return COMMA;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 79 "./lexical.l"
+#line 77 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"ASSIGNOP","",NULL,NULL);return ASSIGNOP;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 80 "./lexical.l"
+#line 78 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"PLUS","",NULL,NULL);return PLUS;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 81 "./lexical.l"
+#line 79 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"MINUS","",NULL,NULL);return MINUS;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 82 "./lexical.l"
+#line 80 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"STAR","",NULL,NULL);return STAR;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 83 "./lexical.l"
+#line 81 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"DIV","",NULL,NULL);return DIV;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 84 "./lexical.l"
+#line 82 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"AND","",NULL,NULL);return AND;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 85 "./lexical.l"
+#line 83 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"OR","",NULL,NULL);return OR;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 86 "./lexical.l"
+#line 84 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"DOT","",NULL,NULL);return DOT;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 87 "./lexical.l"
+#line 85 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"NOT","",NULL,NULL);return NOT;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 88 "./lexical.l"
+#line 86 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"LP","",NULL,NULL);return LP;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 89 "./lexical.l"
+#line 87 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"RP","",NULL,NULL);return RP;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 90 "./lexical.l"
+#line 88 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"LB","",NULL,NULL);return LB;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 91 "./lexical.l"
+#line 89 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"RB","",NULL,NULL);return RB;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 92 "./lexical.l"
+#line 90 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"LC","",NULL,NULL);return LC;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 93 "./lexical.l"
+#line 91 "./lexical.l"
 {yylval.NodeStar=generateNode(0,yylineno,"RC","",NULL,NULL);return RC;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 94 "./lexical.l"
+#line 92 "./lexical.l"
 {}
 	YY_BREAK
 case 29:
 /* rule 29 can match eol */
 YY_RULE_SETUP
-#line 95 "./lexical.l"
+#line 93 "./lexical.l"
 {}
 	YY_BREAK
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
-#line 96 "./lexical.l"
+#line 94 "./lexical.l"
 {}
 	YY_BREAK
 case 31:
 /* rule 31 can match eol */
 YY_RULE_SETUP
-#line 97 "./lexical.l"
+#line 95 "./lexical.l"
 { yycolumn=1; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 98 "./lexical.l"
+#line 96 "./lexical.l"
 { hasError=1;printf("Error type A at Line %d: Mysterious characters \'%s\'\n",yylineno,yytext); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 99 "./lexical.l"
+#line 97 "./lexical.l"
 ECHO;
 	YY_BREAK
-#line 1004 "./lex.yy.c"
+#line 1002 "./lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2018,6 +2016,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 99 "./lexical.l"
+#line 97 "./lexical.l"
 
 
