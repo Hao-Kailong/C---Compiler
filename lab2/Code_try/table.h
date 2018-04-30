@@ -18,7 +18,7 @@ struct Type_
 	union
 	{
 	//基本类型
-	int basic;
+	int basic;//0: INT	1: FLOAT
 	//数组类型信息包括元素类型与数组大小构成
 	struct { Type elem; int size; } array;
 	//结构体类型信息是一个链表
@@ -40,21 +40,26 @@ struct FuncList_
 	char *name;
 	int count;//参数个数
 	Type returnType;//返回类型
-	Type *args;//参数类型
+	FieldList args;//参数（借用tail当作next）
 };
 
 //符号表的记录
 struct Record
 {
+	int type;//0: var 	1: func
 	union record {
-		FuncList func;
 		FieldList var;
+		FuncList func;
 	} *r;
 	struct Recode *next;//open hashing
 };
 
-extern struct Record table[TABLESIZE];
+//符号表
+extern struct Record* table[TABLESIZE];
+//结构体类型表
+extern FieldList *list;
 
+void initTable();
 int hashIndex(char *name);
 
 #endif

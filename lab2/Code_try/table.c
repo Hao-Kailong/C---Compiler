@@ -2,7 +2,17 @@
 #include"syntax.tab.h"
 #include"tree.h"
 
-struct Record table[TABLESIZE];//符号表
+struct Record* table[TABLESIZE];//符号表
+FieldList *list;//类型表
+
+void initTable()
+{
+	for(int i=0;i<TABLESIZE;++i){
+		table[i].r=NULL;
+		table[i].next=NULL;
+	}
+	list=NULL;
+}
 
 int hashIndex(char* name)
 {
