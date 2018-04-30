@@ -21,8 +21,8 @@ struct Node* generateNode(double val,int line,char *type,char *name,struct Node 
 	struct Node *node=(struct Node*)malloc(sizeof(struct Node));
 	if(type!=NULL)
 	{
-		if(strcmp(type,"INT")==0) node->valInt=(int)val;
-		else node->valFloat=(float)val;
+		if(strcmp(type,"INT")==0) node->value.valInt=(int)val;
+		else node->value.valFloat=(float)val;
 	}
 	node->line=line;	
 	strcpy(node->type,type);
@@ -34,7 +34,7 @@ struct Node* generateNode(double val,int line,char *type,char *name,struct Node 
 
 void visit(struct Node *node,int rank)
 {
-	if(!strcmp(node->type,""))//空串
+	if(!strcmp(node->type,""))//空
 		return;
 	for(int i=0;i<rank*spaceSize;++i)
 		printf(" ");
@@ -44,9 +44,9 @@ void visit(struct Node *node,int rank)
 	else if(!strcmp(node->type,"TYPE"))
 		printf("%s: %s\n",node->type,node->name);
 	else if(!strcmp(node->type,"INT"))
-		printf("%s: %d\n",node->type,node->valInt);	
+		printf("%s: %d\n",node->type,node->value.valInt);	
 	else if(!strcmp(node->type,"FLOAT"))
-		printf("%s: %f\n",node->type,node->valFloat);	
+		printf("%s: %f\n",node->type,node->value.valFloat);	
 	else if(node->child==NULL)//词法单元无需输出行号
 		printf("%s\n",node->type);
 	//语法单元

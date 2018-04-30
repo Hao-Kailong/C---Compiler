@@ -1,6 +1,7 @@
 %{
 #include"lex.yy.c"
-int hasError=0;
+int hasError=0;//syntaxError
+struct Node *root;
 %}
 
 %union{
@@ -36,8 +37,7 @@ struct Node* NodeStar;
 %%
 Program: ExtDefList {
 	$$=generateNode(0,$1->line,"Program","",$1,NULL);
-	if(!hasError)	
-		show($$,0);
+	root=$$;
 };
 
 ExtDefList: ExtDef ExtDefList {
@@ -145,7 +145,7 @@ ParamDec: Specifier VarDec {
 	addNext($1,$2);
 };
 
-CompSt: LC DefList StmtList RC {
+CompSt: LC DefList StmtList RC { //definition only occurs at start
 	$$=generateNode(0,$1->line,"CompSt","",$1,NULL); 
 	addNext($1,$2);
 	addNext($2,$3);
@@ -234,6 +234,8 @@ Dec: VarDec {
 	$$=generateNode(0,$1->line,"Dec","",$1,NULL); 
 	addNext($1,$2);
 	addNext($2,$3);
+	//$1->value=$3->value;
+	//Doing in Semantic Analysis.
 };
 
 Exp: Exp ASSIGNOP Exp { 

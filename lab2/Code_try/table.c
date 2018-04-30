@@ -2,10 +2,7 @@
 #include"syntax.tab.h"
 #include"tree.h"
 
-union Record table[TABLESIZE];//符号表
-
-void yyrestart(FILE* f);
-int yyparse();
+struct Record table[TABLESIZE];//符号表
 
 int hashIndex(char* name)
 {
@@ -16,16 +13,3 @@ int hashIndex(char* name)
 	return sum % TABLESIZE;
 }
 
-int main(int argc, char** argv)
-{
-	if (argc <= 1) return 1;
-	FILE* f = fopen(argv[1], "r");
-	if (!f)
-	{
-		perror(argv[1]);
-		return 1;
-	}
-	yyrestart(f);
-	yyparse();
-	return 0;
-}

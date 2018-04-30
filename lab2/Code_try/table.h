@@ -1,3 +1,6 @@
+#ifndef __TABLE_H__
+#define __TABLE_H__
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -23,7 +26,7 @@ struct Type_
 	} u;
 };
 
-//变量记录
+//变量记录（域、结构体）
 struct FieldList_
 {
 	char* name;
@@ -41,25 +44,17 @@ struct FuncList_
 };
 
 //符号表的记录
-union Record
+struct Record
 {
-	FuncList func;
-	FieldList var;
-	union Recode *next;//open hashing
+	union record {
+		FuncList func;
+		FieldList var;
+	} *r;
+	struct Recode *next;//open hashing
 };
 
-extern union Record table[TABLESIZE];
+extern struct Record table[TABLESIZE];
 
 int hashIndex(char *name);
 
-
-
-
-
-
-
-
-
-
-
-
+#endif
