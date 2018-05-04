@@ -17,8 +17,8 @@ struct Type_
 	enum { BASIC, ARRAY, STRUCTURE } kind;
 	union
 	{
-	//基本类型
-	int basic;//0: INT	1: FLOAT
+	int onlyRight;//只有右值
+	int basic;//0: INT	1: FLOAT 
 	//数组类型信息包括元素类型与数组大小构成
 	struct { Type elem; int size; } array;
 	//结构体类型信息是一个链表
@@ -29,7 +29,7 @@ struct Type_
 //变量记录（域、结构体）
 struct FieldList_
 {
-	char* name;
+	char name[64];
 	Type type;// 类型
 	FieldList tail;// 下一个域
 };
@@ -37,7 +37,7 @@ struct FieldList_
 //函数记录
 struct FuncList_
 {
-	char *name;
+	char name[64];
 	int count;//参数个数
 	Type returnType;//返回类型
 	FieldList args;//参数（借用tail当作next）
@@ -46,20 +46,23 @@ struct FuncList_
 //符号表的记录
 struct Record
 {
-	int type;//0: var 	1: func
-	union record {
+	int type;//0: var 	1: func   2:structure
+	union{
 		FieldList var;
 		FuncList func;
-	} *r;
+	};
 	struct Recode *next;//open hashing
 };
 
 //符号表
 extern struct Record* table[TABLESIZE];
-//结构体类型表
-extern FieldList *list;
 
+//函数
 void initTable();
 int hashIndex(char *name);
+bool isEqualType(Type a,Type b);
+Record* findTable(char *name,int type);
+void insertTable(Record *r);
+void LogError(int NO);
 
 #endif
