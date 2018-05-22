@@ -2,14 +2,17 @@
 #include"syntax.tab.h"
 #include"tree.h"
 
-struct Record* table[TABLESIZE];//符号表
+//符号表
+struct Record* table[TABLESIZE];
 
+//初始化符号表
 void initTable()
 {
 	for(int i=0;i<TABLESIZE;++i)
 		table[i]=NULL;
 }
 
+//哈希函数
 int hashIndex(char* name)
 {
 	int length=strlen(name);
@@ -19,27 +22,27 @@ int hashIndex(char* name)
 	return sum % TABLESIZE;
 }
 
+//是否相同类型
 int isEqualType(Type a,Type b)
 {
-	//printf("In IsEqualType\n");
-	if(a->kind!=b->kind)//类型不同
+	if(!a||!b)//处理NULL
+		return 0;
+	if(a->kind!=b->kind)
 		return 0;
 	if(a->kind==0){//基本
-		if(a->u.basic==b->u.basic)
+		if(a->basic==b->basic)
 			return 1;
 		return 0;
 	}
-	else if(a->kind==1){//数组
-		int flag=isEqualType(a->u.array.elem,b->u.array.elem);
-		return flag;
-	}
+	else if(a->kind==1)//数组
+		return isEqualType(a->array.elem,b->array.elem);
 	else{//结构体
-		FieldList f1=a->u.structure->type->u.structure;
-		FieldList f2=b->u.structure->type->u.structure;
+		FieldList f1=a->structure->type->structure;
+		FieldList f2=b->structure->type->structure;
 		while(1){//结构等价
 			if(f1==NULL&&f2==NULL)
 				return 1;
-			else if(f1==NULL||f2==NULL)
+			if(f1==NULL||f2==NULL)
 				return 0;
 			if(!isEqualType(f1->type,f2->type))
 				return 0;
@@ -49,51 +52,48 @@ int isEqualType(Type a,Type b)
 	}
 }
 
+//查找符号表
 struct Record* findTable(char *name,int NO,int line)
 {
 	int index=hashIndex(name);
-	struct Record *tmp=table[index];
-	while(tmp!=NULL){
+	struct Record *record=table[index];
+	while(record!=NULL) {
 		if(NO==1){//函数
-			if(tmp->type==1&&strcmp(tmp->func->name,name)==0)
-				return tmp;
+			if(record->type==1 && strcmp(record->func->name,name)==0)
+				return record;
 		}
-		else{//结构体、变量
-			if(tmp->type==NO&&strcmp(tmp->var->name,name)==0)
-				return tmp;
+		else{//变量、结构体
+			if(record->type==NO && strcmp(record->var->name,name)==0)
+				return record;
 		}
-		tmp=tmp->next;
+		record=record->next;
 	}
 	if(NO==0)
 		LogError(1,line);//Error 1: 变量未定义
 	else if(NO==1)
 		LogError(2,line);//Error 2: 函数未定义
 	else
-		LogError(17,line);//Error 17:未定义的结构体
+		LogError(17,line);//Error 17:结构体未定义
 	return NULL;
 }
 
+//插入符号表
 void insertTable(struct Record *r,int line)
 {
-	//printf("In InsertTable\n");
-	char str[64];
+	char *str=malloc(sizeof(char)*64);
 	if(r->type==0||r->type==2)
 		strcpy(str,r->var->name);
 	else
 		strcpy(str,r->func->name);
-	//printf("%s\n",str);
 	int index=hashIndex(str);
-	//printf("%d\n",index);
 	struct Record *tmp=table[index];
 	if(tmp==NULL){
-		tmp=r;
-		tmp->next=NULL;
-		table[index]=tmp;
+		r->next=NULL;
+		table[index]=r;
 		return;
 	}
 	while(1){
 		if(r->type==0){
-			//printf("Should Appear");
 			if((tmp->type==0||tmp->type==2)&&strcmp(r->var->name,tmp->var->name)==0){
 				LogError(3,line);//Error 3:变量重定义
 				return;
@@ -137,7 +137,7 @@ void LogError(int NO,int line)
 		case 12:printf("error 12 at line %d: not an integer\n",line);break;
 		case 13:printf("error 13 at line %d: illegal use of '.'\n",line);break;
 		case 14:printf("error 14 at line %d: non-existent field\n",line);break;
-		case 15:printf("error 15 at line %d: redefined field\n",line);break;
+		case 15:printf("error 15 at line %d: illegal initialize\n",line);break;
 		case 16:printf("error 16 at line %d: redefine structure\n",line);break;
 		case 17:printf("error 17 at line %d: undefined structure\n",line);break;
 		default:printf("undefined semantic error\n");

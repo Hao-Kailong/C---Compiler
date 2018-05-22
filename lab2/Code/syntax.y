@@ -1,7 +1,7 @@
 %{
 #include"lex.yy.c"
-int hasError=0;//syntaxError
-struct Node *root;
+int hasSyntaxError=0;//词法或语法错误
+struct Node *root;//根结点
 %}
 
 %union{
@@ -62,9 +62,9 @@ ExtDef: Specifier ExtDecList SEMI {
 	addNext($1,$2);
 	addNext($2,$3);
 }
-| Specifier error SEMI {hasError=1;}
-| Specifier error {hasError=1;}
-| Specifier ExtDecList error {hasError=1;};
+| Specifier error SEMI { hasSyntaxError=1; }
+| Specifier error { hasSyntaxError=1; }
+| Specifier ExtDecList error { hasSyntaxError=1; };
 
 ExtDecList: VarDec {
 	$$=generateNode(0,$1->line,"ExtDecList","",$1,NULL); 
@@ -74,8 +74,8 @@ ExtDecList: VarDec {
 	addNext($1,$2);
 	addNext($2,$3);
 }
-| error COMMA ExtDecList {hasError=1;}
-| VarDec COMMA error {hasError=1;};
+| error COMMA ExtDecList { hasSyntaxError=1; }
+| VarDec COMMA error { hasSyntaxError=1; };
 
 Specifier: TYPE {
 	$$=generateNode(0,$1->line,"Specifier","",$1,NULL); 
@@ -95,7 +95,7 @@ StructSpecifier: STRUCT OptTag LC DefList RC {
 	$$=generateNode(0,$1->line,"StructSpecifier","",$1,NULL); 
 	addNext($1,$2);
 }
-| STRUCT OptTag LC error RC {hasError=1;};
+| STRUCT OptTag LC error RC { hasSyntaxError=1; };
 
 OptTag: ID {
 	$$=generateNode(0,$1->line,"OptTag","",$1,NULL); 
@@ -129,7 +129,7 @@ FunDec: ID LP VarList RP {
 	addNext($1,$2);
 	addNext($2,$3);
 }
-| ID LP error RP {hasError=1;};
+| ID LP error RP { hasSyntaxError=1; };
 
 VarList: ParamDec COMMA VarList {
 	$$=generateNode(0,$1->line,"VarList","",$1,NULL); 
@@ -195,12 +195,12 @@ Stmt: Exp SEMI {
 	addNext($3,$4);
 	addNext($4,$5);
 }
-| error SEMI {hasError=1;}
-| Exp error {hasError=1;}
-| RETURN Exp error {hasError=1;}
-| IF LP error RP Stmt {hasError=1;}
-| IF LP error RP Stmt ELSE Stmt {hasError=1;}
-| WHILE LP error RP Stmt {hasError=1;};
+| error SEMI { hasSyntaxError=1; }
+| Exp error { hasSyntaxError=1; }
+| RETURN Exp error { hasSyntaxError=1; }
+| IF LP error RP Stmt { hasSyntaxError=1; }
+| IF LP error RP Stmt ELSE Stmt { hasSyntaxError=1; }
+| WHILE LP error RP Stmt { hasSyntaxError=1; };
 
 DefList: Def DefList {
 	$$=generateNode(0,$1->line,"DefList","",$1,NULL); 
@@ -215,8 +215,8 @@ Def: Specifier DecList SEMI {
 	addNext($1,$2);
 	addNext($2,$3);
 }
-| Specifier error SEMI {hasError=1;}
-| Specifier DecList error {hasError=1;};
+| Specifier error SEMI { hasSyntaxError=1; }
+| Specifier DecList error { hasSyntaxError=1; };
 
 DecList: Dec {
 	$$=generateNode(0,$1->line,"DecList","",$1,NULL); 
@@ -234,8 +234,6 @@ Dec: VarDec {
 	$$=generateNode(0,$1->line,"Dec","",$1,NULL); 
 	addNext($1,$2);
 	addNext($2,$3);
-	//$1->value=$3->value;
-	//Doing in Semantic Analysis.
 };
 
 Exp: Exp ASSIGNOP Exp { 
@@ -322,7 +320,7 @@ Exp: Exp ASSIGNOP Exp {
 | FLOAT {
 	$$=generateNode(0,$1->line,"Exp","",$1,NULL); 
 }
-| ID LP error RP {hasError=1;};
+| ID LP error RP { hasSyntaxError=1; };
 
 Args: Exp COMMA Args {
 	$$=generateNode(0,$1->line,"Args","",$1,NULL); 

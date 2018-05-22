@@ -13,10 +13,8 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	yyrestart(f);
-	yyparse();//语法分析
-	//printf("syntax success!\n");
-	//show(root,0);
-	if(!hasError){
+	yyparse();//词法和语法分析
+	if(!hasSyntaxError){
 		semantic(root);//语义分析
 	}
 	return 0;

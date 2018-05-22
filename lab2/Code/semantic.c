@@ -11,10 +11,8 @@ void semantic(struct Node *root)
 
 void ExtDefList(struct Node *node)
 {
-	if(!node)
-		return;
-	if(strcmp(node->type,"")==0)//空结点
-		return;
+	if(strcmp(node->type,"")==0)
+		return;//空结点
 	struct Node *child=node->child;
 	ExtDef(child);
 	ExtDefList(child->next);
@@ -22,29 +20,23 @@ void ExtDefList(struct Node *node)
 
 void ExtDef(struct Node *node)
 {
-	//printf("In ExtDef\n");
-	if(!node)
-		return;
 	struct Node *child=node->child;
-	Type t=Specifier(child);//类型信息
+	Type type=Specifier(child);//类型信息
 	if(strcmp(child->next->type,"SEMI")==0)
 		return;
 	else if(strcmp(child->next->type,"ExtDecList")==0)
-		ExtDecList(child->next,t);//继承属性
+		ExtDecList(child->next,type);//继承属性
 	else{
-		FunDec(child->next,t);
-		CompSt(child->next->next,t);//检查返回类型错误
+		FunDec(child->next,type);
+		CompSt(child->next->next,type);//检查返回类型错误
 	}
 }
 
-void ExtDecList(struct Node *node,Type type)//使用type类型定义变量
+void ExtDecList(struct Node *node,Type type)
 {
-	//printf("In ExtDecList\n");
-	if(!node)
-		return;
 	struct Node *child=node->child;
-	struct Record *record=VarDec(child,type);//生成新变量的记录
-	insertTable(record,child->line);//插入变量
+	struct Record *record=VarDec(child,type);
+	insertTable(record,child->line);
 	if(child->next==NULL)
 		return;
 	ExtDecList(child->next->next,type);
@@ -52,19 +44,15 @@ void ExtDecList(struct Node *node,Type type)//使用type类型定义变量
 
 Type Specifier(struct Node *node)//返回类型信息
 {
-	//printf("In Specifier\n");
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
-	if(strcmp(child->type,"TYPE")==0){//基本类型
-		Type t=malloc(sizeof(struct Type_));
-		t->kind=0;//BASIC
+	if(strcmp(child->type,"TYPE")==0) {
+		Type type=malloc(sizeof(struct Type_));
+		type->kind=0;//BASIC
 		if(strcmp(child->name,"int")==0)
-			t->u.basic=0;//INT
+			type->basic=0;//INT
 		else
-			t->u.basic=1;//FLOAT
-		//printf("BASIC type\n");
-		return t;
+			type->basic=1;//FLOAT
+		return type;
 	}
 	else
 		return StructSpecifier(child);
@@ -72,73 +60,65 @@ Type Specifier(struct Node *node)//返回类型信息
 
 Type StructSpecifier(struct Node *node)
 {
-	if(!node)
-		return NULL;
 	struct Node *child=node->child->next;
 	if(strcmp(child->type,"Tag")==0){//查表寻找已定义的类型
-		child=child->child;//下一层
-		if(!child)
-			return NULL;
-		struct Record* record=findTable(child->name,2,child->line);//查表
-		//printf("%s\n",record->var->name);
+		child=child->child;
+		struct Record* record=findTable(child->name,2,child->line);
 		if(!record)
 			return NULL;//未定义
-		else
-			return record->var->type;
+		/*返回结构体*/
+		Type type=malloc(sizeof(struct Type_));
+		type->kind=2;
+		type->structure=record->var;
+		return type;
 	}
-	else{//新类型
-		char *str=OptTag(child);
-		struct Record *record=malloc(sizeof(struct Record));
-		record->type=2;
-		record->next=NULL;
-		record->var=malloc(sizeof(struct FieldList_));
-		if(str!=NULL)
-			strcpy(record->var->name,str);//名字
-		record->var->tail=NULL;
-		record->var->type=malloc(sizeof(struct Type_));
-		record->var->type->kind=2;
-		record->var->type->u.structure=malloc(sizeof(struct FieldList_));
-		if(str!=NULL)
-			strcpy(record->var->type->u.structure->name,str);//类型名
-		record->var->type->u.structure->type=malloc(sizeof(struct Type_));
-		record->var->type->u.structure->tail=NULL;
-		/*将域初始为空*/
-		record->var->type->u.structure->type->kind=2;//STRUCTURE
-		record->var->type->u.structure->type->u.structure=NULL;
-		/*定义结构体的域*/
-		record->var->type->u.structure->type->u.structure=DefList(child->next->next,1);//in structure
-		FieldList cur=record->var->type->u.structure->type->u.structure;
-		//判断重复域
-		while(cur->tail!=NULL){
-			FieldList post=cur->tail;
-			while(post){
-				if(strcmp(cur->name,post->name)==0){
-					LogError(15,post->line);//Error 15: 结构体重复域
-					break;
-				}
-				post=post->tail;
-			}
-			//printf("%s\n",cur->name);
-			cur=cur->tail;
+	else {
+		char *str=malloc(sizeof(char)*64);
+		if(!OptTag(child))
+			str=NULL;//无名结构体
+		else
+			strcpy(str,OptTag(child));
+		/*定义新的结构体*/
+		if(str){
+			struct Record *record=malloc(sizeof(struct Record));
+			record->type=2;
+			record->next=NULL;
+			record->var=malloc(sizeof(struct FieldList_));
+			strcpy(record->var->name,str);//结构体名字
+			record->var->tail=NULL;
+			record->var->type=malloc(sizeof(struct Type_));
+			record->var->type->kind=2;
+			/*构造域*/
+			record->var->type->structure=DefList(child->next->next,1);
+			insertTable(record,child->line);
+			/*返回结构体*/
+			Type type=malloc(sizeof(struct Type_));
+			type->kind=2;
+			type->structure=record->var;
+			return type;
 		}
-		if(str!=NULL)
-			insertTable(record,child->line);//有名结构体，插表
-		return record->var->type;
+		else{
+			/*返回结构体*/
+			Type type=malloc(sizeof(struct Type_));
+			type->kind=2;
+			type->structure=malloc(sizeof(struct FieldList_));
+			strcpy(type->structure->name,"");//无名
+			type->structure->tail=NULL;
+			/*构造域*/
+			type->structure->type=malloc(sizeof(struct Type_));
+			type->structure->type->kind=2;
+			type->structure->type->structure=DefList(child->next->next,1);
+			return type;
+		}
 	}
 }
 
 char* OptTag(struct Node *node)
 {
-	if(!node)
-		return NULL;
-	if(strcmp(node->type,"")==0)//空结点
-		return NULL;
+	if(strcmp(node->type,"")==0)
+		return NULL;//空结点
 	struct Node *child=node->child;
-	if(!child)//空标签
-		return NULL;
-	char *str=malloc(sizeof(char)*64);
-	strcpy(str,child->name);//ID
-	return str;
+	return child->name;
 }
 
 //定义变量
@@ -149,12 +129,10 @@ struct Record* VarDec(struct Node *node,Type type)
 }
 struct Record* vardec(struct Node *node,Type type)
 {
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
 	if(strcmp(child->type,"ID")==0){
 		struct Record* tmp=malloc(sizeof(struct Record));
-		tmp->type=0;//变量
+		tmp->type=0;
 		tmp->var=malloc(sizeof(struct FieldList_));
 		strcpy(tmp->var->name,child->name);
 		tmp->var->type=type;
@@ -163,97 +141,90 @@ struct Record* vardec(struct Node *node,Type type)
 		return tmp;
 	}
 	else{//数组
-		struct Record* tmp=vardec(child,type);
+		struct Record* tmp=VarDec(child,type);
 		int num=child->next->next->value.valInt;//数组大小
+		//更新类型
 		Type t=malloc(sizeof(struct Type_));
 		t->kind=1;
-		t->u.array.size=num;
-		t->u.array.elem=tmp->var->type;
-		tmp->var->type=t;//更新类型信息
+		t->array.size=num;
+		t->array.elem=tmp->var->type;
+		//更新记录
+		tmp->var->type=t;
 		return tmp;
 	}
 }
 
 void FunDec(struct Node *node,Type type)
 {
-	//printf("In FunDec\n");
-	if(!node)
-		return;
 	struct Node *child=node->child;
 	if(strcmp(child->next->next->type,"RP")==0){//无参函数
-		struct Record* tmp=malloc(sizeof(struct Record));
-		tmp->type=1;//函数
-		tmp->func=malloc(sizeof(struct FuncList_));
-		strcpy(tmp->func->name,child->name);
-		//printf("Copy Name Success\n");
-		tmp->func->count=0;
-		tmp->func->args=NULL;
-		tmp->func->returnType=type;
-		tmp->next=NULL;
-		insertTable(tmp,child->line);//插入函数
-		//printf("Insert Table Success\n");
+		struct Record* record=malloc(sizeof(struct Record));
+		record->type=1;
+		record->func=malloc(sizeof(struct FuncList_));
+		record->next=NULL;
+		strcpy(record->func->name,child->name);
+		record->func->count=0;
+		record->func->args=NULL;
+		record->func->returnType=type;
+		insertTable(record,child->line);
 	}	
-	else{//带参函数
-		struct Record* tmp=malloc(sizeof(struct Record));
-		tmp->type=1;
-		tmp->func=malloc(sizeof(struct FuncList_));
-		strcpy(tmp->func->name,child->name);
+	else {
+		struct Record* record=malloc(sizeof(struct Record));
+		record->type=1;
+		record->func=malloc(sizeof(struct FuncList_));
+		record->next=NULL;
+		strcpy(record->func->name,child->name);
 		/*获取参数链表*/
-		FieldList args=NULL;
-		VarList(child->next->next,args);
-		tmp->func->args=args;
-		int count=0;//统计参数个数
-		while(args!=NULL){
+		FieldList args=VarList(child->next->next);
+		FieldList cur=args;
+		int count=0;
+		while(cur){
 			++count;
-			args=args->tail;
+			cur=cur->tail;
 		}
-		tmp->func->count=count;
-		//printf("%d\n",count);
-		tmp->func->returnType=type;
-		insertTable(tmp,child->line);//插入函数
+		record->func->args=args;
+		record->func->count=count;
+		record->func->returnType=type;
+		insertTable(record,child->line);
 	}
 }
 
-void VarList(struct Node *node,FieldList args)
+/*构造形参并返回头域*/
+FieldList VarList(struct Node *node)
 {
-	if(!node)
-		return; 
 	struct Node *child=node->child;
-	args=ParamDec(child);
-	if(child->next==NULL)
-		return;
-	VarList(node->next->next,args->tail);
+	FieldList args=ParamDec(child);
+	if(child->next==NULL){
+		args->tail=NULL;
+		return args;
+	}
+	args->tail=VarList(child->next->next);
+	return args;
 }
 
+/*构造当前形参并返回*/
 FieldList ParamDec(struct Node *node)
 {
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
 	Type type=Specifier(child);
 	struct Record *record=VarDec(child->next,type);
-	/*函数形参也要插入符号表*/
 	insertTable(record,child->line);
-	return record->var;//返回变量
+	FieldList args=record->var;//形参即变量
+	return args;
 }
 
 void CompSt(struct Node *node,Type type)
 {
-	//printf("In CompSt\n");
-	if(!node)
-		return;
 	struct Node *child=node->child->next;
-	DefList(child,0);//不在结构体中
+	FieldList field=malloc(sizeof(struct FieldList_));//友情出演
+	DefList(child,0);
 	StmtList(child->next,type);
 }
 
 void StmtList(struct Node *node,Type type)
 {
-	//printf("In StmtList\n");
-	if(!node)
-		return;
-	if(strcmp(node->type,"")==0)//空结点
-		return;
+	if(strcmp(node->type,"")==0)
+		return;//空结点
 	struct Node *child=node->child;
 	Stmt(child,type);
 	StmtList(child->next,type);
@@ -261,20 +232,14 @@ void StmtList(struct Node *node,Type type)
 
 void Stmt(struct Node *node,Type type)
 {
-	if(!node)
-		return;
 	struct Node *child=node->child;
-	if(strcmp(child->type,"Exp")==0){
+	if(strcmp(child->type,"Exp")==0)
 		Exp(child);
-	}		
-	else if(strcmp(child->type,"CompSt")==0){
+	else if(strcmp(child->type,"CompSt")==0)
 		CompSt(child,type);
-	}
 	else if(strcmp(child->type,"RETURN")==0){
-		Type t=Exp(child->next);
-		if(!t)
-			return;
-		if(!isEqualType(t,type))
+		Type tmp=Exp(child->next);
+		if(!isEqualType(tmp,type))
 			LogError(8,child->line);//Error 8: 返回类型不匹配
 	}
 	else if(strcmp(child->type,"WHILE")==0){
@@ -283,193 +248,201 @@ void Stmt(struct Node *node,Type type)
 	}
 	else{
 		Exp(child->next->next);
-		child=child->next->next->next->next;//First Stmt
+		child=child->next->next->next->next;
 		Stmt(child,type);
-		if(child->next!=NULL)
-			Stmt(child->next->next,type);
+		if(!child->next)
+			return;
+		Stmt(child->next->next,type);
 	}
 }
 
+/*返回头域*/
 FieldList DefList(struct Node *node,int inStructure)
 {
-	//printf("In DefList\n");
-	if(!node)
-		return NULL;
-	if(strcmp(node->type,"")==0)//空结点
+	if(strcmp(node->type,"")==0)
 		return NULL;
 	struct Node *child=node->child;
-	FieldList result=Def(child,inStructure);//结果
-	if(!inStructure)
-		return DefList(child->next,inStructure);
-	FieldList cur=result;
-	if(!cur)
-		return NULL;
-	while(cur->tail!=NULL) 
+	/*构造当前语句*/
+	FieldList head=Def(child,inStructure);
+	/*构造下一语句*/
+	FieldList cur=head;
+	while(cur->tail)
 		cur=cur->tail;
-	cur->tail=DefList(child->next,inStructure);//尾部添加
-	return result;
+	cur->tail=DefList(child->next,inStructure);
+	return head;
 }
 
+/*构造当前语句，返回头域*/
 FieldList Def(struct Node *node,int inStructure)
 {
-	//printf("In Def\n");
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
 	Type type=Specifier(child);
 	return DecList(child->next,type,inStructure);
 }
 
+/*返回头域*/
 FieldList DecList(struct Node *node,Type type,int inStructure)
 {
-	//printf("In DecList\n");
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
-	FieldList result=Dec(child,type,inStructure);
-	if(child->next==NULL)
-		return result;
-	else{
-		if(!inStructure)
-			return DecList(child->next->next,type,inStructure);
-		FieldList cur=result;
-		if(!cur)
-			return result;
-		while(cur->tail!=NULL)
-			cur=cur->tail;
-		cur->tail=DecList(child->next->next,type,inStructure);
+	/*构造当前域*/
+	FieldList field=Dec(child,type,inStructure);
+	/*构造下一域*/
+	if(child->next==NULL){
+		field->tail=NULL;
+		return field;
 	}	
-	return result;
+	field->tail=DecList(child->next->next,type,inStructure);
+	return field;
 }
 
+/*构造当前域并返回*/
 FieldList Dec(struct Node *node,Type type,int inStructure)
 {
-	//printf("In Dec\n");
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
 	struct Record *record=VarDec(child,type);
-	//printf("%s\n",record->var->name);
-	if(!inStructure){//不在结构体内
-		insertTable(record,child->line);
-		if(child->next!=NULL){
-			Type tmp=Exp(child->next->next);
-			if(!tmp)
-				return NULL;	
-			//printf("May Appear\n");
-			if(!isEqualType(type,tmp))
-				LogError(5,child->line);//Error 5
-			//printf("Should Appear\n");
-		}
-		return NULL;
+	insertTable(record,child->line);//插入符号表
+	FieldList field=record->var;//域即变量
+	if(!child->next)
+		return field;
+	if(!inStructure){
+		Type tmp=Exp(child->next->next);
+		if(!isEqualType(type,tmp))
+			LogError(5,child->line);//Error 5
+		return field;
 	}
-	else{//在结构体内
-		if(child->next==NULL){
-			FieldList result=malloc(sizeof(struct FieldList_));
-			strcpy(result->name,record->var->name);
-			result->type=record->var->type;
-			result->tail=NULL;
-			result->line=child->line;
-			return result;	
-		}
-		else{
-			LogError(15,child->line);//Error 15: 为结构体域赋值
-			FieldList result=malloc(sizeof(struct FieldList_));
-			strcpy(result->name,record->var->name);
-			result->type=record->var->type;
-			result->tail=NULL;
-			result->line=child->line;
-			return result;	
-		}
-	}
+	LogError(15,child->line);//Error 15: 为结构体域赋值
+	return field;
 }
 
+int hasLeft(struct Node *exp)
+{
+	struct Node *child=exp->child;
+	if(strcmp(child->type,"ID")==0 && child->next==NULL)
+		return 1;
+	if(strcmp(child->type,"LP")==0)
+		return hasLeft(child->next);
+	if(strcmp(child->type,"Exp")==0){
+		if(strcmp(child->next->type,"ASSIGNOP")==0)
+			return hasLeft(child);
+		if(strcmp(child->next->type,"LB")==0)
+			return 1;
+		if(strcmp(child->next->type,"DOT")==0)
+			return 1;
+	}	
+	return 0;
+}
+
+/*返回类型，出错返回NULL*/
 Type Exp(struct Node *node)
 {
-	//printf("In Exp\n");
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
 	if(child->next!=NULL&&strcmp(child->next->type,"ASSIGNOP")==0){
-		Type t1=Exp(child);
-		if(!t1)
+		if(!hasLeft(child)){ 
+			LogError(6,child->line);//Error 6: 无左值
 			return NULL;
-		if(t1->kind==0&&t1->onlyRight==1){
-			LogError(6,child->line);//Error 6: 赋值号左边出现常数
-			return t1;
 		}
-		Type t2=Exp(child->next->next);
-		if(!t2)
-			return NULL;
-		if(!isEqualType(t1,t2))
-			LogError(5,child->line);//Error 5: 赋值类型不匹配
-		return t1;
-	}	
-	else if(child->next!=NULL&&(strcmp(child->next->type,"AND")==0||strcmp(child->next->type,"OR")==0)){
 		Type t1=Exp(child);
 		Type t2=Exp(child->next->next);
 		if(!t1||!t2)
 			return NULL;
-		if(t1->kind!=0||t1->u.basic!=0||t2->kind!=0||t2->u.basic!=0)
-			LogError(7,child->line);//Error 7: 操作数类型不匹配
+		if(!isEqualType(t1,t2)){
+			LogError(5,child->line);//Error 5: 赋值类型不匹配
+			return NULL;
+		}
+		return t1;
+	}	
+	else if(child->next!=NULL
+				&&( strcmp(child->next->type,"AND")==0
+					||strcmp(child->next->type,"OR")==0 )
+   	)//逻辑运算
+	{
+		Type t1=Exp(child);
+		Type t2=Exp(child->next->next);
+		if(!t1||!t2)
+			return NULL;
+		if(t1->kind!=0||t1->basic!=0||t2->kind!=0||t2->basic!=0){
+			LogError(7,child->line);//Error 7: 操作数操作符不匹配
+			return NULL;
+		}
 		return t1;
 	}
-	else if(strcmp(child->type,"MINUS")==0)
-		return Exp(child->next);
+	else if(child->next!=NULL
+				&&( strcmp(child->next->type,"PLUS")==0
+					||strcmp(child->next->type,"MINUS")==0 
+					||strcmp(child->next->type,"STAR")==0 
+					||strcmp(child->next->type,"DIV")==0 
+					||strcmp(child->next->type,"RELOP")==0 )
+   	)//算数运算
+	{
+		Type t1=Exp(child);
+		Type t2=Exp(child->next->next);
+		if(!t1||!t2)
+			return NULL;
+		if(t1->kind!=0||t2->kind!=0){
+			LogError(7,child->line);//Error 7
+			return NULL;
+		}
+		if(t1->basic!=t2->basic){
+			LogError(7,child->line);//Error 7
+			return NULL;
+		}
+		return t1;
+	}
+	else if(strcmp(child->type,"MINUS")==0){
+		Type t=Exp(child->next);
+		if(!t)
+			return NULL;
+		if(t->kind!=0){
+			LogError(7,child->line);//Error 7
+			return NULL;
+		}
+		return t;
+	}
 	else if(strcmp(child->type,"NOT")==0){
 		Type t=Exp(child->next);
 		if(!t)
 			return NULL;
-		if(t->kind!=0||t->u.basic==1)
+		if(t->kind!=0||t->basic!=0){
 			LogError(7,child->line);//Error 7
+			return NULL;
+		}
 		return t;
 	}
-	else if(strcmp(child->type,"ID")==0){
-		if(child->next==NULL){
-			struct Record *record=findTable(child->name,0,child->line);
-			if(!record)
-				return NULL;
-			else
-				return record->var->type;
-		}
-		else if(strcmp(child->next->next->type,"RP")==0){//无参函数
+	else if(child->next!=NULL && strcmp(child->type,"ID")==0){
+		if(strcmp(child->next->next->type,"RP")==0){//无参函数
 			struct Record *record=findTable(child->name,1,child->line);
 			if(!record)
 				return NULL;
-			else{
-				if(record->func->count!=0)
-					LogError(9,child->line);//Error 9: 实参形参不匹配
-				return record->func->returnType;
+			if(record->func->count!=0){
+				LogError(9,child->line);//Error 9: 实参形参不匹配
+				return NULL;
 			}
+			return record->func->returnType;
 		}
-		else{//带参函数
+		else{
 			struct Record *record=findTable(child->name,1,child->line);
 			if(!record)
 				return NULL;
-			else{
-				FieldList args=Args(child->next->next);
-				FieldList args1=record->func->args;
-				while(1){//比较参数类型是否匹配
-					//printf("~~~\n");
-					if(args==NULL&&args1==NULL)
-						break;
-					else if(args==NULL||args1==NULL){//参数个数不同
-						LogError(9,child->line);
-						break;
-					}
-					if(!isEqualType(args->type,args1->type)){//参数类型不同
-						LogError(9,child->line);
-						break;
-					}
-					printf("Should Appear\n");
-					args=args->tail;
-					args1=args1->tail;
+			FieldList args1=record->func->args;
+			FieldList args2=Args(child->next->next);
+			while(1){//比较参数是否匹配
+				if(args1==NULL&&args2==NULL)
+					break;
+				if(args1==NULL||args2==NULL){//个数不同
+					LogError(9,child->line);
+					return NULL;
 				}
-				return record->func->returnType;
+				if(!isEqualType(args1->type,args2->type)){//类型不同
+					LogError(9,child->line);
+					return NULL;
+				}
+				args1=args1->tail;
+				args2=args2->tail;
 			}
+			return record->func->returnType;
 		}
 	}
-	else if(child->next!=NULL&&strcmp(child->next->type,"LB")==0){
+	else if(child->next!=NULL && strcmp(child->next->type,"LB")==0){
 		Type t1=Exp(child);
 		if(!t1)
 			return NULL;
@@ -480,13 +453,13 @@ Type Exp(struct Node *node)
 		Type t2=Exp(child->next->next);
 		if(!t2)
 			return NULL;
-		if(t2->kind!=0||t2->u.basic==1){
+		if(t2->kind!=0||t2->basic!=0){
 			LogError(12,child->line);//Error 12: 数组下标不正确
 			return NULL;
 		}
-		return t1->u.array.elem;
+		return t1->array.elem;
 	}
-	else if(child->next!=NULL&&strcmp(child->next->type,"DOT")==0){//结构体访问
+	else if(child->next!=NULL && strcmp(child->next->type,"DOT")==0){
 		Type t=Exp(child);
 		if(!t)
 			return NULL;
@@ -494,53 +467,48 @@ Type Exp(struct Node *node)
 			LogError(13,child->line);//Error 13: 对非结构体使用.
 			return NULL;
 		}
-		char fieldName[64];//域名
+		char *fieldName=malloc(sizeof(char)*64);
 		strcpy(fieldName,child->next->next->name);
-		FieldList field=t->u.structure->type->u.structure;
+		FieldList field=t->structure->type->structure;
 		while(field){
 			if(strcmp(field->name,fieldName)==0)
 				return field->type;
 			field=field->tail;
 		}
-		LogError(14,child->line);//Error 14: 访问结构体中未定义的域
+		LogError(14,child->line);//Error 14: 未定义的域
 		return NULL;
+	}
+	else if(strcmp(child->type,"ID")==0){
+		struct Record* record=findTable(child->name,0,child->line);
+		if(!record)
+			return NULL;
+		return record->var->type;
 	}
 	else if(strcmp(child->type,"INT")==0){
 		Type t=malloc(sizeof(struct Type_));
 		t->kind=0;
-		t->onlyRight=1;//只有右值
-		t->u.basic=0;	
+		t->basic=0;
+		t->FINAL=1;	
 		return t;
 	}
 	else if(strcmp(child->type,"FLOAT")==0){
 		Type t=malloc(sizeof(struct Type_));
 		t->kind=0;
-		t->onlyRight=1;//只有右值
-		t->u.basic=1;	
+		t->basic=1;
+		t->FINAL=1;	
 		return t;
-	}
-	else{
-		Type t1=Exp(child);
-		Type t2=Exp(child->next->next);
-		if(!t1||!t2)
-			return NULL;
-		if(t1->kind!=0||t2->kind!=0)
-			LogError(7,child->line);//Error 7
-		if(t1->u.basic!=t2->u.basic)
-			LogError(7,child->line);
-		return t1;
 	}
 }
 
+/*返回实参列表*/
 FieldList Args(struct Node *node){
-	if(!node)
-		return NULL;
 	struct Node *child=node->child;
 	FieldList args=malloc(sizeof(struct FieldList_));
 	args->type=Exp(child);
-	args->tail=NULL;
-	if(child->next==NULL)
+	if(child->next==NULL){
+		args->tail=NULL;
 		return args;
+	}
 	args->tail=Args(child->next->next);
 	return args;
 }

@@ -8,7 +8,7 @@
 void yyrestart(FILE *f);
 int yyparse();
 
-extern int hasError;//语法错误
+extern int hasSyntaxError;//词法语法错误
 extern int yylineno;//行号
 extern int yycolumn;//列号
 
@@ -25,6 +25,7 @@ struct Node{
 	struct Node *next;
 };
 
+//根结点
 extern struct Node *root;
 
 //打印错误信息

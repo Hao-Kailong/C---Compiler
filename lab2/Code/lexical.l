@@ -93,5 +93,8 @@ return RELOP;
 {SHORTNOTE} {}
 {LONGNOTE} {}
 \n { yycolumn=1; }
-. { hasError=1;printf("Error type A at Line %d: Mysterious characters \'%s\'\n",yylineno,yytext); }
+. { 
+hasSyntaxError=1;//存在词法错误
+printf("Error type A at Line %d near %d: Mysterious characters \'%s\'\n",yylineno,yycolumn,yytext); 
+}
 %%
