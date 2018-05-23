@@ -15,9 +15,9 @@ extern int yycolumn;//列号
 //语法树节点
 struct Node{
 	union{
-		int valInt;
-		float valFloat;
-	}value;
+		int valueInt;
+		float valueFloat;
+	};
 	int line;
 	char type[64];
 	char name[64];

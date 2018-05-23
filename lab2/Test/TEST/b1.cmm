@@ -15,6 +15,7 @@ struct DogHouse putDogInHouse(struct DogHouse house[10], struct Dog wilds[100]){
  	while(i < 10) {
  		j = i * 10;
  		while (j < (i+1)*10){
+			house[i].dogs[j] = wilds[i*10 + j];
 			j = j;
  		}
  		i = i + 1;

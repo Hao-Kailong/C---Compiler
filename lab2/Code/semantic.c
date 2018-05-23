@@ -124,33 +124,28 @@ char* OptTag(struct Node *node)
 //定义变量
 struct Record* VarDec(struct Node *node,Type type)
 {
-	struct Record* record=vardec(node,type);
-	return record;
-}
-struct Record* vardec(struct Node *node,Type type)
-{
 	struct Node *child=node->child;
 	if(strcmp(child->type,"ID")==0){
-		struct Record* tmp=malloc(sizeof(struct Record));
-		tmp->type=0;
-		tmp->var=malloc(sizeof(struct FieldList_));
-		strcpy(tmp->var->name,child->name);
-		tmp->var->type=type;
-		tmp->var->tail=NULL;
-		tmp->next=NULL;
-		return tmp;
+		struct Record* record=malloc(sizeof(struct Record));
+		record->type=0;
+		record->var=malloc(sizeof(struct FieldList_));
+		strcpy(record->var->name,child->name);
+		record->var->type=type;
+		record->var->tail=NULL;
+		record->next=NULL;
+		return record;
 	}
 	else{//数组
-		struct Record* tmp=VarDec(child,type);
-		int num=child->next->next->value.valInt;//数组大小
+		struct Record* record=VarDec(child,type);
+		int num=child->next->next->valueInt;//数组大小
 		//更新类型
 		Type t=malloc(sizeof(struct Type_));
 		t->kind=1;
 		t->array.size=num;
-		t->array.elem=tmp->var->type;
+		t->array.elem=record->var->type;
 		//更新记录
-		tmp->var->type=t;
-		return tmp;
+		record->var->type=t;
+		return record;
 	}
 }
 
@@ -181,7 +176,6 @@ void FunDec(struct Node *node,Type type)
 		while(cur){
 			++count;
 			cur=cur->tail;
-
 		}
 		record->func->args=args;
 		record->func->count=count;
@@ -388,6 +382,8 @@ Type Exp(struct Node *node)
 		}
 		return t1;
 	}
+	else if(strcmp(child->type,"LP")==0)
+		return Exp(child->next);
 	else if(strcmp(child->type,"MINUS")==0){
 		Type t=Exp(child->next);
 		if(!t)
