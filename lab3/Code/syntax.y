@@ -1,24 +1,7 @@
 %{
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
 #include"lex.yy.c"
-int hasError=0;
-%}
-
-%{
-struct Node{
-	union{
-		int valInt;
-		float valFloat;
-		double valDouble;
-	};
-	int line;
-	char type[64];
-	char name[64];
-	struct Node *child;
-	struct Node *next;
-};
+int hasSyntaxError=0;//词法或语法错误
+struct Node *root;//根结点
 %}
 
 %union{
@@ -54,9 +37,9 @@ struct Node* NodeStar;
 %%
 Program: ExtDefList {
 	$$=generateNode(0,$1->line,"Program","",$1,NULL);
-	if(!hasError)	
-		show($$,0);
+	root=$$;
 };
+
 ExtDefList: ExtDef ExtDefList {
 	$$=generateNode(0,$1->line,"ExtDefList","",$1,NULL); 
 	addNext($1,$2);
@@ -64,6 +47,7 @@ ExtDefList: ExtDef ExtDefList {
 | /*empty*/ {
 	$$=generateNode(0,0,"","",NULL,NULL); 
 };
+
 ExtDef: Specifier ExtDecList SEMI {
 	$$=generateNode(0,$1->line,"ExtDef","",$1,NULL); 
 	addNext($1,$2);
@@ -77,7 +61,11 @@ ExtDef: Specifier ExtDecList SEMI {
 	$$=generateNode(0,$1->line,"ExtDef","",$1,NULL); 
 	addNext($1,$2);
 	addNext($2,$3);
-};
+}
+| Specifier error SEMI { hasSyntaxError=1; }
+| Specifier error { hasSyntaxError=1; }
+| Specifier ExtDecList error { hasSyntaxError=1; };
+
 ExtDecList: VarDec {
 	$$=generateNode(0,$1->line,"ExtDecList","",$1,NULL); 
 }
@@ -86,8 +74,8 @@ ExtDecList: VarDec {
 	addNext($1,$2);
 	addNext($2,$3);
 }
-| error COMMA ExtDecList {hasError=1;}
-| VarDec COMMA error {hasError=1;};
+| error COMMA ExtDecList { hasSyntaxError=1; }
+| VarDec COMMA error { hasSyntaxError=1; };
 
 Specifier: TYPE {
 	$$=generateNode(0,$1->line,"Specifier","",$1,NULL); 
@@ -95,6 +83,7 @@ Specifier: TYPE {
 | StructSpecifier {
 	$$=generateNode(0,$1->line,"Specifier","",$1,NULL); 
 };
+
 StructSpecifier: STRUCT OptTag LC DefList RC {
 	$$=generateNode(0,$1->line,"StructSpecifier","",$1,NULL); 
 	addNext($1,$2);
@@ -106,13 +95,15 @@ StructSpecifier: STRUCT OptTag LC DefList RC {
 	$$=generateNode(0,$1->line,"StructSpecifier","",$1,NULL); 
 	addNext($1,$2);
 }
-| STRUCT OptTag LC error RC {hasError=1;};
+| STRUCT OptTag LC error RC { hasSyntaxError=1; };
+
 OptTag: ID {
 	$$=generateNode(0,$1->line,"OptTag","",$1,NULL); 
 }
 | /*empty*/ {
 	$$=generateNode(0,0,"","",NULL,NULL); 
 };
+
 Tag: ID {
 	$$=generateNode(0,$1->line,"Tag","",$1,NULL); 
 };
@@ -126,6 +117,7 @@ VarDec: ID {
 	addNext($2,$3);
 	addNext($3,$4);
 };
+
 FunDec: ID LP VarList RP {
 	$$=generateNode(0,$1->line,"FunDec","",$1,NULL); 
 	addNext($1,$2);
@@ -137,7 +129,8 @@ FunDec: ID LP VarList RP {
 	addNext($1,$2);
 	addNext($2,$3);
 }
-| ID LP error RP {hasError=1;};
+| ID LP error RP { hasSyntaxError=1; };
+
 VarList: ParamDec COMMA VarList {
 	$$=generateNode(0,$1->line,"VarList","",$1,NULL); 
 	addNext($1,$2);
@@ -146,17 +139,19 @@ VarList: ParamDec COMMA VarList {
 | ParamDec {
 	$$=generateNode(0,$1->line,"VarList","",$1,NULL); 
 };
+
 ParamDec: Specifier VarDec {
 	$$=generateNode(0,$1->line,"ParamDec","",$1,NULL); 
 	addNext($1,$2);
 };
 
-CompSt: LC DefList StmtList RC {
+CompSt: LC DefList StmtList RC { //definition only occurs at start
 	$$=generateNode(0,$1->line,"CompSt","",$1,NULL); 
 	addNext($1,$2);
 	addNext($2,$3);
 	addNext($3,$4);
 };
+
 StmtList: Stmt StmtList {
 	$$=generateNode(0,$1->line,"StmtList","",$1,NULL); 
 	addNext($1,$2);
@@ -164,6 +159,7 @@ StmtList: Stmt StmtList {
 | /*empty*/ {
 	$$=generateNode(0,0,"","",NULL,NULL); 
 };
+
 Stmt: Exp SEMI {
 	$$=generateNode(0,$1->line,"Stmt","",$1,NULL); 
 	addNext($1,$2);
@@ -199,12 +195,12 @@ Stmt: Exp SEMI {
 	addNext($3,$4);
 	addNext($4,$5);
 }
-| error SEMI {hasError=1;}
-| Exp error {hasError=1;}
-| RETURN Exp error {hasError=1;}
-| IF LP error RP Stmt {hasError=1;}
-| IF LP error RP Stmt ELSE Stmt {hasError=1;}
-| WHILE LP error RP Stmt {hasError=1;};
+| error SEMI { hasSyntaxError=1; }
+| Exp error { hasSyntaxError=1; }
+| RETURN Exp error { hasSyntaxError=1; }
+| IF LP error RP Stmt { hasSyntaxError=1; }
+| IF LP error RP Stmt ELSE Stmt { hasSyntaxError=1; }
+| WHILE LP error RP Stmt { hasSyntaxError=1; };
 
 DefList: Def DefList {
 	$$=generateNode(0,$1->line,"DefList","",$1,NULL); 
@@ -213,13 +209,15 @@ DefList: Def DefList {
 | /*empty*/ {
 	$$=generateNode(0,0,"","",NULL,NULL); 
 };
+
 Def: Specifier DecList SEMI {
 	$$=generateNode(0,$1->line,"Def","",$1,NULL); 
 	addNext($1,$2);
 	addNext($2,$3);
 }
-| Specifier error SEMI {hasError=1;}
-| Specifier DecList error {hasError=1;};
+| Specifier error SEMI { hasSyntaxError=1; }
+| Specifier DecList error { hasSyntaxError=1; };
+
 DecList: Dec {
 	$$=generateNode(0,$1->line,"DecList","",$1,NULL); 
 }
@@ -228,6 +226,7 @@ DecList: Dec {
 	addNext($1,$2);
 	addNext($2,$3);
 };
+
 Dec: VarDec {
 	$$=generateNode(0,$1->line,"Dec","",$1,NULL); 
 }
@@ -321,9 +320,8 @@ Exp: Exp ASSIGNOP Exp {
 | FLOAT {
 	$$=generateNode(0,$1->line,"Exp","",$1,NULL); 
 }
-| Exp LB error RB {hasError=1;} 
-| ID LP error RP {hasError=1;}
-| Exp error ID {hasError=1;};
+| ID LP error RP { hasSyntaxError=1; };
+
 Args: Exp COMMA Args {
 	$$=generateNode(0,$1->line,"Args","",$1,NULL); 
 	addNext($1,$2);
@@ -333,71 +331,3 @@ Args: Exp COMMA Args {
 	$$=generateNode(0,$1->line,"Args","",$1,NULL); 
 };
 %%
-#define spaceSize 2
-
-void yyerror(char *msg)
-{
-	printf("Error type B at Line %d\n",yylineno);
-}
-
-void addChild(struct Node *f, struct Node *s)
-{
-	f->child=s;
-}
-
-void addNext(struct Node *a, struct Node *b)
-{
-	a->next=b;	
-} 
-
-struct Node* generateNode(double val,int line,char *type,char *name,struct Node *child,struct Node *next)
-{
-	struct Node *node=(struct Node*)malloc(sizeof(struct Node));
-	if(type!=NULL)
-	{
-		if(strcmp(type,"INT")==0) node->valInt=(int)val;
-		else if(strcmp(type,"FLOAT")==0) node->valFloat=(float)val;
-		else node->valDouble=val;
-	}
-	node->line=line;	
-	strcpy(node->type,type);
-	strcpy(node->name,name);
-	node->child=child;
-	node->next=next;	
-	return node;
-}
-
-void visit(struct Node *node,int rank)
-{
-	if(!strcmp(node->type,""))//空串
-		return;
-	for(int i=0;i<rank*spaceSize;++i)
-		printf(" ");
-	//特殊词法单元
-	if(!strcmp(node->type,"ID"))
-		printf("%s: %s\n",node->type,node->name);
-	else if(!strcmp(node->type,"TYPE"))
-		printf("%s: %s\n",node->type,node->name);
-	else if(!strcmp(node->type,"INT"))
-		printf("%s: %d\n",node->type,node->valInt);	
-	else if(!strcmp(node->type,"FLOAT"))
-		printf("%s: %f\n",node->type,node->valFloat);	
-	else if(node->child==NULL)//词法单元无需输出行号
-		printf("%s\n",node->type);
-	//语法单元
-	else
-		printf("%s (%d)\n",node->type,node->line);
-}
-
-void show(struct Node *node,int rank)
-{
-	if(!node)
-		return;
-	visit(node,rank);
-	struct Node *child=node->child;	
-	while(child)
-	{
-		show(child,rank+1);
-		child=child->next;
-	}
-}

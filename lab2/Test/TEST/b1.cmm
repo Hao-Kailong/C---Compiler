@@ -9,23 +9,20 @@ struct DogHouse{
  	struct Dog dogs[10];
 };
 
-struct DogHouse putDogInHouse(struct DogHouse house[10], struct Dog
-wilds[100]){
+struct DogHouse putDogInHouse(struct DogHouse house[10], struct Dog wilds[100]){
  	int i,j;
  	i = 0;
  	while(i < 10) {
  		j = i * 10;
  		while (j < (i+1)*10){
- 			house[i].dogs[j] = wilds[i*10 + j];
- 			j = j;
+			j = j;
  		}
  		i = i + 1;
  	}
 	return house[0];
 }
 
-struct Dog letDogOut(struct DogHouse broken[10], int number, int
-brokenAddress, float looseBeauty) {
+struct Dog letDogOut(struct DogHouse broken[10], int number, int brokenAddress, float looseBeauty) {
  	struct Dog de;
  	int x, y;
  	x = 0;

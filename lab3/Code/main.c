@@ -1,10 +1,7 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include"table.h"
 #include"syntax.tab.h"
 #include"tree.h"
-
-void yyrestart(FILE* f);
-int yyparse();
+#include"semantic.h"
 
 int main(int argc, char** argv)
 {
@@ -16,6 +13,9 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	yyrestart(f);
-	yyparse();
+	yyparse();//词法和语法分析
+	if(!hasSyntaxError){
+		semantic(root);//语义分析
+	}
 	return 0;
 }
