@@ -1,7 +1,8 @@
-#include"table.h"
-#include"syntax.tab.h"
 #include"tree.h"
+#include"syntax.tab.h"
+#include"table.h"
 #include"semantic.h"
+#include"IR.h"
 
 int main(int argc, char** argv)
 {
@@ -14,8 +15,9 @@ int main(int argc, char** argv)
 	}
 	yyrestart(f);
 	yyparse();//词法和语法分析
-	if(!hasSyntaxError){
-		semantic(root);//语义分析
-	}
+	if(hasSyntaxError)
+		return 1;
+	semantic(root);//语义分析
+	IR(root);//生成中间代码
 	return 0;
 }
