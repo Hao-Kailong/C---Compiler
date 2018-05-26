@@ -15,6 +15,7 @@ int main(int argc, char** argv)
 	yyrestart(f);
 	yyparse();//词法和语法分析
 	if(!hasSyntaxError){
+		show(root,0);
 		semantic(root);//语义分析
 	}
 	return 0;
