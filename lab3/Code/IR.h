@@ -9,30 +9,34 @@
 typedef struct Operand_* Operand;
 typedef struct InterCode_* InterCode;
 
+//中间代码链表
 extern InterCode head,tail;
 
-//操作数符
+//操作数、操作符
 struct Operand_ {
 	char str[64];
-	struct Operand_* next;//函数参数
+	struct Operand_* next;
+};
+
+//代码类型
+enum codeKind{
+	LABEL,FUNCTION,ASSIGN,		//2
+	ADD,SUB,MULT,DV,			//6
+	ADDRESSASSIGN,//=&
+	STARASSIGN,//=*
+	ASSIGNSTAR,//*=				
+	GOTO,						//10
+	COND,//条件
+	RTN,
+	DEC,//空间分配				//13
+	ARG,CALL,PARAM, 			//16
+	READ,WRITE					//18
 };
 
 //中间代码
 struct InterCode_
 {
-	enum{
-		LABEL,FUNCTION,ASSIGN,
-		ADD,SUB,MULT,DV,
-		ADDRESSASSIGN,//=&
-		STARASSIGN,//=*
-		ASSIGNSTAR,//*=
-		GOTO,
-		COND,//条件
-		RTN,
-		DEC,//空间分配
-		ARG,CALL,PARAM,
-		READ,WRITE
-	}kind;
+	enum codeKind kind;
 	Operand o0;
 	Operand o1;
 	Operand o2;
@@ -41,7 +45,11 @@ struct InterCode_
 	struct InterCode_* next;
 };
 
-void IR(struct Node *root);
+void IR(struct Node *root,FILE *fp);
+void IRgenerate(struct Node *root);
+void IRopt();
+void IRprint(FILE *fp);
+
 void trsExtDefList(struct Node *node);
 void trsExtDef(struct Node *node);
 void trsSpecifier(struct Node *node);
@@ -60,18 +68,10 @@ Operand trsExp(struct Node *node,Operand place);
 Operand trsArgs(struct Node *node,Operand args);
 void trsCond(struct Node *node,Operand label1,Operand label2);
 
-/*===========================================*/
-
-void initIR();
 Operand newOprRnd();
 Operand newOprStr(char *str);
-//生成中间代码
-InterCode newCode(int kind,Operand o0,
-		Operand o1,Operand o2,Operand op);
-//添加代码
+InterCode newCode(enum codeKind kind,Operand o0,
+	Operand o1,Operand o2,Operand op);
 void addCode(InterCode code);
-void addReadFunc();
-void addWriteFunc();
-void IRprint(InterCode head);
 
 #endif
