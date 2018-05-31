@@ -69,9 +69,10 @@ struct Record* findTable(char *name,int type,int line);
 void insertTable(struct Record *r,int line);
 
 
-//输出错误信息
 void LogError(int NO,int line);
-void showType(Type type,int level);
-void showFieldList(FieldList field,int level);
+void addRead();
+void addWrite();
+void showType(Type type,int level);//显示类型
+void showFieldList(FieldList field,int level);//显示FieldList
 
 #endif

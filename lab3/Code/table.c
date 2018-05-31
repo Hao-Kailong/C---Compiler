@@ -10,6 +10,8 @@ void initTable()
 {
 	for(int i=0;i<TABLESIZE;++i)
 		table[i]=NULL;
+	addRead();//添加预定义函数
+	addWrite();
 }
 
 //哈希函数
@@ -176,6 +178,47 @@ void showType(Type type,int level)
 	}
 }
 
+void addRead()
+{
+	struct Record *record=malloc(sizeof(struct Record));
+	record->type=1;
+	record->func=malloc(sizeof(struct FuncList_));
+	record->next=NULL;
+	//定义函数
+	strcpy(record->func->name,"read");
+	record->func->args=NULL;
+	record->func->count=0;
+	//定义类型
+	Type type=malloc(sizeof(struct Type_));
+	type->kind=0;
+	type->basic=0;
+	record->func->returnType=type;
+	insertTable(record,-1);
+}
+
+void addWrite()
+{
+	struct Record *record=malloc(sizeof(struct Record));
+	record->type=1;
+	record->func=malloc(sizeof(struct FuncList_));
+	record->next=NULL;
+	//定义函数
+	strcpy(record->func->name,"write");
+	record->func->count=1;
+	//定义类型
+	Type type=malloc(sizeof(struct Type_));
+	type->kind=0;
+	type->basic=0;
+	record->func->returnType=type;
+	//定义形参
+	FieldList args=malloc(sizeof(struct FieldList_));
+	strcpy(args->name,"");
+	args->type=type;
+	args->tail=NULL;
+	record->func->args=args;
+	insertTable(record,-1);
+}
+
 void showFieldList(FieldList field,int level)
 {
 	if(!field)
@@ -196,4 +239,5 @@ void showFieldList(FieldList field,int level)
 	if(field->tail)
 		showFieldList(field->tail,level);
 }
+
 

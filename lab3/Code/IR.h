@@ -11,6 +11,8 @@ typedef struct InterCode_* InterCode;
 
 //中间代码链表
 extern InterCode head,tail;
+//翻译异常
+extern int hasIRError;
 
 //操作数、操作符
 struct Operand_ {
@@ -45,10 +47,10 @@ struct InterCode_
 	struct InterCode_* next;
 };
 
-void IR(struct Node *root,FILE *fp);
+void IR(struct Node *root,char *outfile);
 void IRgenerate(struct Node *root);
 void IRopt();
-void IRprint(FILE *fp);
+void IRprint(char *outfile);
 
 void trsExtDefList(struct Node *node);
 void trsExtDef(struct Node *node);
