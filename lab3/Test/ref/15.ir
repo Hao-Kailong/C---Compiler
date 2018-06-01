@@ -1,0 +1,22 @@
+FUNCTION print :
+PARAM a
+PARAM b
+t0 := a
+WRITE t0
+t1 := b
+WRITE t1
+t2 := #0
+RETURN t2
+FUNCTION main :
+t3 := #2
+i := t3
+t4 := #3
+j := t4
+t6 := i
+t7 := j
+ARG t7
+ARG t6
+t5 := CALL print
+k := t5
+t8 := #0
+RETURN t8

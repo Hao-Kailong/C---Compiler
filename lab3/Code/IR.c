@@ -1,18 +1,16 @@
 #include"IR.h"
 
+//用于按地址传实参
+static int swch=0;
+
 //中间代码链表
 InterCode IRhead=NULL;
 InterCode IRtail=NULL;
-
-//翻译异常
-int hasIRError=0;
 
 /*中间代码总入口*/
 void IR(struct Node *root,char *outfile)
 {
 	IRgenerate(root);//生成
-	if(hasIRError)
-		return;
 	IRopt();//优化
 	IRprint(outfile);//打印
 }
@@ -49,7 +47,7 @@ void trsSpecifier(struct Node *node)
 	if(!strcmp(child->type,"TYPE"))
 		return;
 	printf("Error: Can't Translate Structure Type!\n");
-	hasIRError=1;
+	exit(-1);//翻译异常
 }
 
 /*返回名字*/
@@ -241,8 +239,8 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 			return place;
 		}
 		else{//未知情况
-			printf("Error In Exp Assign!\n");
-			return NULL;
+			printf("Error: Can't Translate Structure Type!\n");
+			exit(-1);
 		}
 	}
 	else if( (child->next && (!strcmp(child->next->type,"AND")
@@ -270,9 +268,9 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 		trsExp(child->next->next,t2);
 		if(!strcmp(child->next->type,"PLUS"))
 			addCode(newCode(ADD,place,t1,t2,NULL));
-		else if(!strcmp(child->next->type,"PLUS"))
+		else if(!strcmp(child->next->type,"MINUS"))
 			addCode(newCode(SUB,place,t1,t2,NULL));
-		else if(!strcmp(child->next->type,"PLUS"))
+		else if(!strcmp(child->next->type,"STAR"))
 			addCode(newCode(MULT,place,t1,t2,NULL));
 		else
 			addCode(newCode(DV,place,t1,t2,NULL));
@@ -338,9 +336,15 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 			offset=tmp;
 			head=head->next;
 		}
-		Operand addr=newOprRnd();//数组首地址
-		Operand name=newOprStr(child->name);
-		addCode(newCode(ADDRESSASSIGN,addr,name,NULL,NULL));
+		Operand addr=NULL;//数组首地址
+		struct Record *record=findTable(child->name,0,-1);
+		if(!record->var->pos){//变量
+			char *buf=malloc(sizeof(char)*64);
+			strcpy(buf,"&");
+			strcat(buf,child->name);
+			addr=newOprStr(buf);
+		}
+		else addr=newOprStr(child->name);
 		Operand realAddr=newOprRnd();//目标地址
 		addCode(newCode(ADD,realAddr,addr,offset,NULL));
 		if(place){
@@ -351,11 +355,21 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 	}
 	else if(child->next && !strcmp(child->next->type,"DOT")){
 		printf("Error: Can't Translate Structure Type!\n");
-		hasIRError=1;
-		return place;
+		exit(-1);
 	}
 	else if(!strcmp(child->type,"ID")){//ID
-		Operand t=newOprStr(child->name);
+		Operand t=NULL;
+		if(swch){//实参
+			struct Record *record=findTable(child->name,0,-1);
+			if(record->var->type->kind==1){
+				char *buf=malloc(sizeof(char)*64);
+				strcpy(buf,"&");
+				strcat(buf,child->name);
+				t=newOprStr(buf);
+			}
+			else t=newOprStr(child->name);
+		}
+		else t=newOprStr(child->name);
 		if(place){
 			addCode(newCode(ASSIGN,place,t,NULL,NULL));
 			return place;
@@ -380,7 +394,9 @@ Operand trsArgs(struct Node *node,Operand args)//args表示实参头
 {
 	struct Node *child=node->child;
 	Operand t=newOprRnd();
+	swch=1;//on
 	trsExp(child,t);
+	swch=0;//off
 	t->next=args;//与形参反序
 	if(!child->next)
 		return t;

@@ -1,0 +1,137 @@
+FUNCTION josef :
+PARAM m
+DEC a 84
+t0 := #0
+i := t0
+t1 := #0
+k := t1
+LABEL t2 :
+t5 := i
+t6 := #21
+IF t5 < t6 GOTO t3
+GOTO t4
+LABEL t3 :
+t8 := i
+t9 := #1
+t7 := t8 + t9
+t10 := i
+t11 := t10 * #4
+t12 := &a
+t13 := t12 + t11
+*t13 := t7
+t14 := *t13
+t16 := i
+t17 := #1
+t15 := t16 + t17
+i := t15
+GOTO t2
+LABEL t4 :
+t18 := #0
+i := t18
+LABEL t19 :
+t22 := i
+t23 := #21
+IF t22 < t23 GOTO t20
+GOTO t21
+LABEL t20 :
+t24 := #1
+j := t24
+LABEL t25 :
+t28 := j
+t29 := m
+IF t28 < t29 GOTO t26
+GOTO t27
+LABEL t26 :
+LABEL t30 :
+t35 := k
+t36 := t35 * #4
+t37 := &a
+t38 := t37 + t36
+t33 := *t38
+t34 := #0
+IF t33 == t34 GOTO t31
+GOTO t32
+LABEL t31 :
+t42 := k
+t43 := #1
+t40 := t42 + t43
+t48 := k
+t49 := #1
+t46 := t48 + t49
+t47 := #21
+t44 := t46 / t47
+t45 := #21
+t41 := t44 * t45
+t39 := t40 - t41
+k := t39
+GOTO t30
+LABEL t32 :
+t51 := j
+t52 := #1
+t50 := t51 + t52
+j := t50
+t56 := k
+t57 := #1
+t54 := t56 + t57
+t62 := k
+t63 := #1
+t60 := t62 + t63
+t61 := #21
+t58 := t60 / t61
+t59 := #21
+t55 := t58 * t59
+t53 := t54 - t55
+k := t53
+GOTO t25
+LABEL t27 :
+LABEL t64 :
+t69 := k
+t70 := t69 * #4
+t71 := &a
+t72 := t71 + t70
+t67 := *t72
+t68 := #0
+IF t67 == t68 GOTO t65
+GOTO t66
+LABEL t65 :
+t76 := k
+t77 := #1
+t74 := t76 + t77
+t82 := k
+t83 := #1
+t80 := t82 + t83
+t81 := #21
+t78 := t80 / t81
+t79 := #21
+t75 := t78 * t79
+t73 := t74 - t75
+k := t73
+GOTO t64
+LABEL t66 :
+t85 := k
+t86 := t85 * #4
+t87 := &a
+t88 := t87 + t86
+t84 := *t88
+WRITE t84
+t89 := #0
+t90 := k
+t91 := t90 * #4
+t92 := &a
+t93 := t92 + t91
+*t93 := t89
+t94 := *t93
+t96 := i
+t97 := #1
+t95 := t96 + t97
+i := t95
+GOTO t19
+LABEL t21 :
+t98 := #0
+RETURN t98
+FUNCTION main :
+t99 := #5
+ARG t99
+t100 := CALL josef
+t101 := #0
+RETURN t101

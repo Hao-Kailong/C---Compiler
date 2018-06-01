@@ -1,0 +1,137 @@
+FUNCTION sort :
+PARAM n
+DEC a 400
+t0 := #0
+i := t0
+t1 := #0
+j := t1
+LABEL t2 :
+t5 := i
+t6 := n
+IF t5 < t6 GOTO t3
+GOTO t4
+LABEL t3 :
+t8 := #100
+t10 := i
+t11 := #2
+t9 := t10 * t11
+t7 := t8 - t9
+t12 := i
+t13 := t12 * #4
+t14 := &a
+t15 := t14 + t13
+*t15 := t7
+t16 := *t15
+t18 := i
+t19 := #1
+t17 := t18 + t19
+i := t17
+GOTO t2
+LABEL t4 :
+t20 := #0
+i := t20
+LABEL t21 :
+t24 := i
+t25 := n
+IF t24 < t25 GOTO t22
+GOTO t23
+LABEL t22 :
+t26 := #0
+j := t26
+LABEL t27 :
+t30 := j
+t31 := i
+IF t30 < t31 GOTO t28
+GOTO t29
+LABEL t28 :
+t36 := i
+t37 := t36 * #4
+t38 := &a
+t39 := t38 + t37
+t34 := *t39
+t40 := j
+t41 := t40 * #4
+t42 := &a
+t43 := t42 + t41
+t35 := *t43
+IF t34 < t35 GOTO t32
+GOTO t33
+LABEL t32 :
+t45 := i
+t46 := t45 * #4
+t47 := &a
+t48 := t47 + t46
+t44 := *t48
+t := t44
+t50 := j
+t51 := t50 * #4
+t52 := &a
+t53 := t52 + t51
+t49 := *t53
+t54 := i
+t55 := t54 * #4
+t56 := &a
+t57 := t56 + t55
+*t57 := t49
+t58 := *t57
+t59 := t
+t60 := j
+t61 := t60 * #4
+t62 := &a
+t63 := t62 + t61
+*t63 := t59
+t64 := *t63
+LABEL t33 :
+t66 := j
+t67 := #1
+t65 := t66 + t67
+j := t65
+GOTO t27
+LABEL t29 :
+t69 := i
+t70 := #1
+t68 := t69 + t70
+i := t68
+GOTO t21
+LABEL t23 :
+t71 := #0
+i := t71
+LABEL t72 :
+t75 := i
+t76 := n
+IF t75 < t76 GOTO t73
+GOTO t74
+LABEL t73 :
+t78 := i
+t79 := t78 * #4
+t80 := &a
+t81 := t80 + t79
+t77 := *t81
+WRITE t77
+t83 := i
+t84 := #1
+t82 := t83 + t84
+i := t82
+GOTO t72
+LABEL t74 :
+t85 := #0
+RETURN t85
+FUNCTION main :
+READ t86
+m := t86
+t90 := m
+t91 := #100
+IF t90 >= t91 GOTO t87
+GOTO t88
+LABEL t87 :
+t93 := #1
+t92 := #0 - t93
+WRITE t92
+GOTO t89
+LABEL t88 :
+t94 := m
+ARG t94
+t95 := CALL sort
+LABEL t89 :
+t96 := #0
+RETURN t96

@@ -32,6 +32,7 @@ struct FieldList_
 	char name[64];
 	Type type;
 	FieldList tail;
+	int pos;//0:变量  1:形参
 };
 
 //函数

@@ -1,5 +1,8 @@
 #include"semantic.h"
 
+//用于区分变量和形参
+static int swch=0;
+
 /*语义分析总入口*/
 void semantic(struct Node *root)
 {
@@ -145,6 +148,10 @@ struct Record* VarDec(struct Node *node,Type type)
 		t->array.elem=record->var->type;
 		//更新记录
 		record->var->type=t;
+		//记录位置
+		if(swch)
+			record->var->pos=1;
+		else record->var->pos=0;
 		return record;
 	}
 }
@@ -169,8 +176,9 @@ void FunDec(struct Node *node,Type type)
 		record->func=malloc(sizeof(struct FuncList_));
 		record->next=NULL;
 		strcpy(record->func->name,child->name);
-		/*获取参数链表*/
+		swch=1;//on
 		FieldList args=VarList(child->next->next);
+		swch=0;//off
 		FieldList cur=args;
 		int count=0;
 		while(cur){

@@ -1,0 +1,19 @@
+FUNCTION main :
+t0 := #0
+i := t0
+LABEL t1 :
+t4 := i
+t5 := #10
+IF t4 < t5 GOTO t2
+GOTO t3
+LABEL t2 :
+t6 := i
+WRITE t6
+t8 := i
+t9 := #1
+t7 := t8 + t9
+i := t7
+GOTO t1
+LABEL t3 :
+t10 := #0
+RETURN t10

@@ -11,8 +11,6 @@ typedef struct InterCode_* InterCode;
 
 //中间代码链表
 extern InterCode head,tail;
-//翻译异常
-extern int hasIRError;
 
 //操作数、操作符
 struct Operand_ {

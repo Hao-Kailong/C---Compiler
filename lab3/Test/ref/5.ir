@@ -1,0 +1,55 @@
+FUNCTION main :
+t1 := #1
+t0 := #0 - t1
+i := t0
+t2 := #1
+j := t2
+t3 := j
+m := t3
+t5 := i
+t6 := j
+t4 := t5 + t6
+n := t4
+t7 := i
+m := t7
+t13 := i
+t14 := #0
+IF t13 > t14 GOTO t12
+GOTO t11
+LABEL t12 :
+t15 := j
+t16 := #0
+IF t15 <= t16 GOTO t8
+GOTO t11
+LABEL t11 :
+t18 := m
+t19 := #0
+IF t18 > t19 GOTO t17
+GOTO t9
+LABEL t17 :
+t20 := n
+t21 := #0
+IF t20 != t21 GOTO t8
+GOTO t9
+LABEL t8 :
+t22 := #1
+WRITE t22
+GOTO t10
+LABEL t9 :
+t23 := #0
+WRITE t23
+LABEL t10 :
+t27 := m
+t28 := #0
+IF t27 > t28 GOTO t24
+GOTO t25
+LABEL t24 :
+t29 := #2
+WRITE t29
+GOTO t26
+LABEL t25 :
+t30 := #3
+WRITE t30
+LABEL t26 :
+t31 := #0
+RETURN t31

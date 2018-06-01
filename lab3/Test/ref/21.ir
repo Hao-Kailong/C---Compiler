@@ -1,0 +1,71 @@
+FUNCTION main :
+READ t0
+i := t0
+READ t1
+j := t1
+READ t2
+k := t2
+t8 := i
+t9 := #0
+IF t8 <= t9 GOTO t3
+GOTO t7
+LABEL t7 :
+t10 := j
+t11 := #0
+IF t10 <= t11 GOTO t3
+GOTO t6
+LABEL t6 :
+t12 := k
+t13 := #0
+IF t12 <= t13 GOTO t3
+GOTO t4
+LABEL t3 :
+t15 := #1
+t14 := #0 - t15
+WRITE t14
+GOTO t5
+LABEL t4 :
+t21 := i
+t22 := j
+t19 := t21 + t22
+t20 := k
+IF t19 <= t20 GOTO t16
+GOTO t17
+LABEL t16 :
+t24 := #1
+t23 := #0 - t24
+WRITE t23
+GOTO t18
+LABEL t17 :
+t30 := i
+t31 := k
+t28 := t30 + t31
+t29 := j
+IF t28 <= t29 GOTO t25
+GOTO t26
+LABEL t25 :
+t33 := #1
+t32 := #0 - t33
+WRITE t32
+GOTO t27
+LABEL t26 :
+t39 := j
+t40 := k
+t37 := t39 + t40
+t38 := i
+IF t37 <= t38 GOTO t34
+GOTO t35
+LABEL t34 :
+t42 := #1
+t41 := #0 - t42
+WRITE t41
+GOTO t36
+LABEL t35 :
+t43 := #1
+WRITE t43
+LABEL t36 :
+LABEL t27 :
+LABEL t18 :
+LABEL t5 :
+t44 := #0
+RETURN t44

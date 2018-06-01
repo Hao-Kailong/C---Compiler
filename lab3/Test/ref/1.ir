@@ -1,0 +1,83 @@
+FUNCTION main :
+t0 := #0
+a := t0
+t1 := #3
+b := t1
+READ t2
+n := t2
+t6 := n
+t7 := #0
+IF t6 > t7 GOTO t3
+GOTO t4
+LABEL t3 :
+t8 := #1
+WRITE t8
+GOTO t5
+LABEL t4 :
+t12 := n
+t13 := #0
+IF t12 < t13 GOTO t9
+GOTO t10
+LABEL t9 :
+t15 := #1
+t14 := #0 - t15
+WRITE t14
+GOTO t11
+LABEL t10 :
+t16 := #0
+WRITE t16
+LABEL t11 :
+LABEL t5 :
+t21 := a
+t22 := #0
+IF t21 > t22 GOTO t20
+GOTO t18
+LABEL t20 :
+t23 := b
+t24 := #0
+IF t23 <= t24 GOTO t17
+GOTO t18
+LABEL t17 :
+t25 := #1
+WRITE t25
+GOTO t19
+LABEL t18 :
+t26 := #0
+WRITE t26
+LABEL t19 :
+t31 := a
+t32 := b
+IF t31 < t32 GOTO t27
+GOTO t30
+LABEL t30 :
+t33 := b
+t34 := n
+IF t33 >= t34 GOTO t27
+GOTO t28
+LABEL t27 :
+t35 := #1
+WRITE t35
+GOTO t29
+LABEL t28 :
+t36 := #0
+WRITE t36
+LABEL t29 :
+t41 := a
+t42 := b
+IF t41 == t42 GOTO t37
+GOTO t40
+LABEL t40 :
+t43 := b
+t44 := n
+IF t43 != t44 GOTO t37
+GOTO t38
+LABEL t37 :
+t45 := #1
+WRITE t45
+GOTO t39
+LABEL t38 :
+t46 := #0
+WRITE t46
+LABEL t39 :
+t47 := #0
+RETURN t47

@@ -1,0 +1,41 @@
+FUNCTION func :
+PARAM a
+t0 := #5
+t1 := #1
+t2 := #1
+t3 := t2 * #4
+t4 := t3 * t1
+t5 := a + t4
+*t5 := t0
+t6 := *t5
+t7 := #0
+RETURN t7
+FUNCTION main :
+DEC arr 48
+t8 := #7
+t9 := #1
+t10 := #1
+t11 := t10 * #4
+t12 := t11 * t9
+t13 := &arr + t12
+*t13 := t8
+t14 := *t13
+t16 := #1
+t17 := #1
+t18 := t17 * #4
+t19 := t18 * t16
+t20 := &arr + t19
+t15 := *t20
+WRITE t15
+t21 := &arr
+ARG t21
+t22 := CALL func
+t24 := #1
+t25 := #1
+t26 := t25 * #4
+t27 := t26 * t24
+t28 := &arr + t27
+t23 := *t28
+WRITE t23
+t29 := #0
+RETURN t29
