@@ -1,0 +1,137 @@
+FUNCTION search :
+PARAM target
+DEC x 20
+t0 := #0
+i := t0
+LABEL t1 :
+t4 := i
+t5 := #5
+IF t4 < t5 GOTO t2
+GOTO t3
+LABEL t2 :
+READ t6
+t7 := i
+t8 := t7 * #4
+t9 := &x + t8
+*t9 := t6
+t10 := *t9
+t12 := i
+t13 := #1
+t11 := t12 + t13
+i := t11
+GOTO t1
+LABEL t3 :
+t14 := #0
+left := t14
+t15 := #4
+right := t15
+LABEL t16 :
+t19 := left
+t20 := right
+IF t19 <= t20 GOTO t17
+GOTO t18
+LABEL t17 :
+t24 := left
+t25 := right
+t22 := t24 + t25
+t23 := #2
+t21 := t22 / t23
+index := t21
+t27 := index
+t28 := t27 * #4
+t29 := &x + t28
+t26 := *t29
+middle := t26
+t32 := middle
+t33 := target
+IF t32 == t33 GOTO t30
+GOTO t31
+LABEL t30 :
+t34 := index
+RETURN t34
+LABEL t31 :
+t39 := #0
+t44 := middle
+t46 := left
+t47 := t46 * #4
+t48 := &x + t47
+t45 := *t48
+IF t44 > t45 GOTO t43
+GOTO t41
+LABEL t43 :
+t49 := target
+t51 := left
+t52 := t51 * #4
+t53 := &x + t52
+t50 := *t53
+IF t49 >= t50 GOTO t42
+GOTO t41
+LABEL t42 :
+t54 := target
+t55 := middle
+IF t54 < t55 GOTO t40
+GOTO t41
+LABEL t40 :
+t39 := #1
+LABEL t41 :
+IF t39 != #0 GOTO t35
+GOTO t38
+LABEL t38 :
+t56 := #0
+t60 := middle
+t62 := left
+t63 := t62 * #4
+t64 := &x + t63
+t61 := *t64
+IF t60 < t61 GOTO t59
+GOTO t58
+LABEL t59 :
+t65 := #0
+t69 := target
+t71 := left
+t72 := t71 * #4
+t73 := &x + t72
+t70 := *t73
+IF t69 >= t70 GOTO t66
+GOTO t68
+LABEL t68 :
+t74 := target
+t75 := middle
+IF t74 < t75 GOTO t66
+GOTO t67
+LABEL t66 :
+t65 := #1
+LABEL t67 :
+IF t65 != #0 GOTO t57
+GOTO t58
+LABEL t57 :
+t56 := #1
+LABEL t58 :
+IF t56 != #0 GOTO t35
+GOTO t36
+LABEL t35 :
+t77 := index
+t78 := #1
+t76 := t77 - t78
+right := t76
+GOTO t37
+LABEL t36 :
+t80 := index
+t81 := #1
+t79 := t80 + t81
+left := t79
+LABEL t37 :
+GOTO t16
+LABEL t18 :
+t83 := #1
+t82 := #0 - t83
+RETURN t82
+FUNCTION main :
+READ t84
+n := t84
+t86 := n
+ARG t86
+t85 := CALL search
+WRITE t85
+t87 := #0
+RETURN t87

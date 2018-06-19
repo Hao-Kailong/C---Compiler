@@ -1,0 +1,79 @@
+FUNCTION main :
+READ t0
+dollar := t0
+READ t1
+rmb := t1
+t5 := dollar
+t6 := #100
+IF t5 > t6 GOTO t2
+GOTO t3
+LABEL t2 :
+t10 := rmb
+t11 := #50
+IF t10 < t11 GOTO t7
+GOTO t8
+LABEL t7 :
+t13 := rmb
+t14 := dollar
+t12 := t13 + t14
+WRITE t12
+GOTO t9
+LABEL t8 :
+t16 := rmb
+t17 := dollar
+t15 := t16 - t17
+WRITE t15
+LABEL t9 :
+GOTO t4
+LABEL t3 :
+t21 := dollar
+t22 := #100
+IF t21 == t22 GOTO t18
+GOTO t19
+LABEL t18 :
+t26 := rmb
+t27 := #100
+IF t26 < t27 GOTO t23
+GOTO t24
+LABEL t23 :
+t28 := rmb
+WRITE t28
+GOTO t25
+LABEL t24 :
+t30 := rmb
+t31 := #100
+t29 := t30 - t31
+WRITE t29
+LABEL t25 :
+GOTO t20
+LABEL t19 :
+t34 := dollar
+t35 := #100
+IF t34 < t35 GOTO t32
+GOTO t33
+LABEL t32 :
+t41 := rmb
+t42 := dollar
+t39 := t41 + t42
+t40 := #100
+IF t39 > t40 GOTO t36
+GOTO t37
+LABEL t36 :
+t44 := dollar
+t45 := #100
+t43 := t44 + t45
+WRITE t43
+GOTO t38
+LABEL t37 :
+t46 := #100
+WRITE t46
+LABEL t38 :
+LABEL t33 :
+LABEL t20 :
+LABEL t4 :
+t48 := dollar
+t49 := rmb
+t47 := t48 + t49
+WRITE t47
+t50 := #0
+RETURN t50

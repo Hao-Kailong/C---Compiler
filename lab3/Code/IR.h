@@ -10,11 +10,12 @@ typedef struct Operand_* Operand;
 typedef struct InterCode_* InterCode;
 
 //中间代码链表
-extern InterCode head,tail;
+extern InterCode IRhead,IRtail;
 
 //操作数、操作符
 struct Operand_ {
 	char str[64];
+	int value;
 	struct Operand_* next;
 };
 
@@ -37,7 +38,7 @@ enum codeKind{
 struct InterCode_
 {
 	enum codeKind kind;
-	Operand o0;
+	Operand o0;//o0 := o1 op o2, 从左至右
 	Operand o1;
 	Operand o2;
 	Operand op;
@@ -66,9 +67,9 @@ void trsDecList(struct Node *node);
 void trsDec(struct Node *node);
 Operand trsExp(struct Node *node,Operand place);
 Operand trsArgs(struct Node *node,Operand args);
-void trsCond(struct Node *node,Operand label1,Operand label2);
+void trsCond(struct Node *node,Operand labelt,Operand labelf);
 
-Operand newOprRnd();
+Operand newOprRnd(int kind);//0: var    1: label
 Operand newOprStr(char *str);
 InterCode newCode(enum codeKind kind,Operand o0,
 	Operand o1,Operand o2,Operand op);

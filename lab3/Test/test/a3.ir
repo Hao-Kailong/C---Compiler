@@ -1,0 +1,59 @@
+FUNCTION main :
+READ t0
+x := t0
+READ t1
+n := t1
+t5 := n
+t9 := n
+t10 := #2
+t7 := t9 / t10
+t8 := #2
+t6 := t7 * t8
+IF t5 == t6 GOTO t2
+GOTO t3
+LABEL t2 :
+t11 := #1
+result := t11
+GOTO t4
+LABEL t3 :
+t12 := x
+result := t12
+LABEL t4 :
+t14 := n
+t15 := #2
+t13 := t14 / t15
+n := t13
+LABEL t16 :
+t19 := n
+t20 := #0
+IF t19 > t20 GOTO t17
+GOTO t18
+LABEL t17 :
+t22 := x
+t23 := x
+t21 := t22 * t23
+x := t21
+t26 := n
+t30 := n
+t31 := #2
+t28 := t30 / t31
+t29 := #2
+t27 := t28 * t29
+IF t26 != t27 GOTO t24
+GOTO t25
+LABEL t24 :
+t33 := result
+t34 := x
+t32 := t33 * t34
+result := t32
+LABEL t25 :
+t36 := n
+t37 := #2
+t35 := t36 / t37
+n := t35
+GOTO t16
+LABEL t18 :
+t38 := result
+WRITE t38
+t39 := #0
+RETURN t39

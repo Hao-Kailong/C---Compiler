@@ -150,8 +150,8 @@ struct Record* VarDec(struct Node *node,Type type)
 		record->var->type=t;
 		//记录位置
 		if(swch)
-			record->var->pos=1;
-		else record->var->pos=0;
+			record->var->pos=1;//形参
+		else record->var->pos=0;//变量
 		return record;
 	}
 }

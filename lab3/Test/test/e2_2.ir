@@ -1,0 +1,200 @@
+FUNCTION qsort :
+PARAM array
+PARAM l
+PARAM r
+t1 := l
+t2 := #0
+t3 := t1 * #4
+t2 := t2 + t3
+t4 := array + t2
+t0 := *t4
+x := t0
+a := l
+b := r
+t7 := a
+t8 := b
+IF t7 < t8 GOTO label0
+GOTO label1
+LABEL label0 :
+LABEL label2 :
+t9 := a
+t10 := b
+IF t9 < t10 GOTO label3
+GOTO label4
+LABEL label3 :
+LABEL label5 :
+t11 := a
+t12 := b
+IF t11 < t12 GOTO label8
+GOTO label7
+LABEL label8 :
+t15 := b
+t16 := #0
+t17 := t15 * #4
+t16 := t16 + t17
+t18 := array + t16
+t13 := *t18
+t14 := x
+IF t13 > t14 GOTO label6
+GOTO label7
+LABEL label6 :
+t20 := b
+t21 := #1
+t19 := t20 - t21
+b := t19
+GOTO label5
+LABEL label7 :
+t22 := a
+t23 := b
+IF t22 < t23 GOTO label9
+GOTO label10
+LABEL label9 :
+t25 := b
+t26 := #0
+t27 := t25 * #4
+t26 := t26 + t27
+t28 := array + t26
+t24 := *t28
+t29 := a
+t30 := #0
+t31 := t29 * #4
+t30 := t30 + t31
+t32 := array + t30
+*t32 := t24
+t33 := *t32
+t35 := a
+t36 := #1
+t34 := t35 + t36
+a := t34
+LABEL label10 :
+LABEL label11 :
+t37 := a
+t38 := b
+IF t37 < t38 GOTO label14
+GOTO label13
+LABEL label14 :
+t41 := a
+t42 := #0
+t43 := t41 * #4
+t42 := t42 + t43
+t44 := array + t42
+t39 := *t44
+t40 := x
+IF t39 < t40 GOTO label12
+GOTO label13
+LABEL label12 :
+t46 := a
+t47 := #1
+t45 := t46 + t47
+a := t45
+GOTO label11
+LABEL label13 :
+t48 := a
+t49 := b
+IF t48 < t49 GOTO label15
+GOTO label16
+LABEL label15 :
+t51 := a
+t52 := #0
+t53 := t51 * #4
+t52 := t52 + t53
+t54 := array + t52
+t50 := *t54
+t55 := b
+t56 := #0
+t57 := t55 * #4
+t56 := t56 + t57
+t58 := array + t56
+*t58 := t50
+t59 := *t58
+t61 := b
+t62 := #1
+t60 := t61 - t62
+b := t60
+LABEL label16 :
+GOTO label2
+LABEL label4 :
+t63 := x
+t64 := a
+t65 := #0
+t66 := t64 * #4
+t65 := t65 + t66
+t67 := array + t65
+*t67 := t63
+t68 := *t67
+t69 := array
+t70 := l
+t72 := a
+t73 := #1
+t71 := t72 - t73
+ARG t71
+ARG t70
+ARG t69
+t74 := CALL qsort
+t75 := array
+t77 := a
+t78 := #1
+t76 := t77 + t78
+t79 := r
+ARG t79
+ARG t76
+ARG t75
+t80 := CALL qsort
+LABEL label1 :
+t81 := #0
+RETURN t81
+FUNCTION main :
+DEC number 40
+N := #10
+i := #0
+LABEL label17 :
+t84 := i
+t85 := N
+IF t84 < t85 GOTO label18
+GOTO label19
+LABEL label18 :
+READ t86
+t87 := i
+t88 := #0
+t89 := t87 * #4
+t88 := t88 + t89
+t90 := &number + t88
+*t90 := t86
+t91 := *t90
+t93 := i
+t94 := #1
+t92 := t93 + t94
+i := t92
+GOTO label17
+LABEL label19 :
+t95 := &number
+t96 := #0
+t98 := N
+t99 := #1
+t97 := t98 - t99
+ARG t97
+ARG t96
+ARG t95
+t100 := CALL qsort
+i := #0
+LABEL label20 :
+t102 := i
+t103 := N
+IF t102 < t103 GOTO label21
+GOTO label22
+LABEL label21 :
+t105 := i
+t106 := #0
+t107 := t105 * #4
+t106 := t106 + t107
+t108 := &number + t106
+t104 := *t108
+WRITE t104
+t110 := i
+t111 := #1
+t109 := t110 + t111
+i := t109
+GOTO label20
+LABEL label22 :
+t112 := #0
+RETURN t112
