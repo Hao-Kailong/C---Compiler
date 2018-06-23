@@ -1,82 +1,71 @@
 FUNCTION myPow :
 PARAM x
 PARAM n
-t2 := n
-t3 := #0
-IF t2 == t3 GOTO t0
-GOTO t1
-LABEL t0 :
-t4 := #1
-RETURN t4
-LABEL t1 :
-t7 := n
-t8 := #1
-IF t7 == t8 GOTO t5
-GOTO t6
-LABEL t5 :
-t9 := x
-RETURN t9
-LABEL t6 :
-t12 := n
-t13 := #2
-IF t12 == t13 GOTO t10
-GOTO t11
-LABEL t10 :
-t15 := x
-t16 := x
-t14 := t15 * t16
-RETURN t14
-LABEL t11 :
-t20 := n
-t24 := n
-t25 := #2
-t22 := t24 / t25
-t23 := #2
-t21 := t22 * t23
-IF t20 == t21 GOTO t17
-GOTO t18
-LABEL t17 :
-t28 := x
-t30 := n
-t31 := #2
-t29 := t30 / t31
-ARG t29
-ARG t28
-t27 := CALL myPow
-t32 := #2
-ARG t32
-ARG t27
-t26 := CALL myPow
-RETURN t26
-GOTO t19
-LABEL t18 :
-t35 := x
-t37 := n
-t38 := #2
-t36 := t37 / t38
-ARG t36
-ARG t35
-t34 := CALL myPow
-t39 := #2
-ARG t39
-ARG t34
-t33 := CALL myPow
-value := t33
-t41 := x
-t42 := value
-t40 := t41 * t42
-RETURN t40
-LABEL t19 :
+t_v0 := n
+t_v1 := #0
+IF t_v0 == t_v1 GOTO label0
+GOTO label1
+LABEL label0 :
+t_v2 := #1
+RETURN t_v2
+LABEL label1 :
+t_v3 := n
+t_v4 := #1
+IF t_v3 == t_v4 GOTO label2
+GOTO label3
+LABEL label2 :
+t_v5 := x
+RETURN t_v5
+LABEL label3 :
+t_v6 := n
+t_v7 := #2
+IF t_v6 == t_v7 GOTO label4
+GOTO label5
+LABEL label4 :
+t_v8 := x * x
+RETURN t_v8
+LABEL label5 :
+t_v11 := n
+t_v13 := n / #2
+t_v12 := t_v13 * #2
+IF t_v11 == t_v12 GOTO label6
+GOTO label7
+LABEL label6 :
+t_v19 := x
+t_v20 := n / #2
+ARG t_v20
+ARG t_v19
+t_v18 := CALL myPow
+t_v23 := #2
+ARG t_v23
+ARG t_v18
+t_v17 := CALL myPow
+RETURN t_v17
+GOTO label8
+LABEL label7 :
+t_v26 := x
+t_v27 := n / #2
+ARG t_v27
+ARG t_v26
+t_v25 := CALL myPow
+t_v30 := #2
+ARG t_v30
+ARG t_v25
+t_v24 := CALL myPow
+value := t_v24
+t_v31 := x * value
+RETURN t_v31
+LABEL label8 :
 FUNCTION main :
-READ t43
-x1 := t43
-READ t44
-n1 := t44
-t46 := x1
-t47 := n1
-ARG t47
-ARG t46
-t45 := CALL myPow
-WRITE t45
-t48 := #0
-RETURN t48
+READ t_v34
+x1 := t_v34
+READ t_v35
+n1 := t_v35
+t_v37 := x1
+t_v38 := n1
+ARG t_v38
+ARG t_v37
+t_v36 := CALL myPow
+WRITE t_v36
+t_v39 := #0
+RETURN t_v39

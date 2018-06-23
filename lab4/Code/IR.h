@@ -38,7 +38,7 @@ enum codeKind{
 struct InterCode_
 {
 	enum codeKind kind;
-	Operand o0;//o0 := o1 op o2, 从左至右
+	Operand o;//o := o1 op o2, 从左至右
 	Operand o1;
 	Operand o2;
 	Operand op;
@@ -46,7 +46,7 @@ struct InterCode_
 	struct InterCode_* next;
 };
 
-void IR(struct Node *root,char *outfile);
+void IR(struct Node *root);
 void IRgenerate(struct Node *root);
 void IRopt();
 void IRprint(char *outfile);
@@ -71,7 +71,7 @@ void trsCond(struct Node *node,Operand labelt,Operand labelf);
 
 Operand newOprRnd(int kind);//0: var    1: label
 Operand newOprStr(char *str);
-InterCode newCode(enum codeKind kind,Operand o0,
+InterCode newCode(enum codeKind kind,Operand o,
 	Operand o1,Operand o2,Operand op);
 void addCode(InterCode code);
 

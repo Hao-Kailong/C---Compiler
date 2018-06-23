@@ -8,11 +8,10 @@ InterCode IRhead=NULL;
 InterCode IRtail=NULL;
 
 /*中间代码总入口*/
-void IR(struct Node *root,char *outfile)
+void IR(struct Node *root)
 {
 	IRgenerate(root);//生成
 	IRopt();//优化
-	IRprint(outfile);//打印
 }
 
 void IRgenerate(struct Node *root)
@@ -65,11 +64,11 @@ char* trsVarDec(struct Node *node,int level,int flag)//局部变量、函数形�
 	if(level)
 		return name;
 	//数组添加代码
-	Operand o0=newOprStr(name);
+	Operand o=newOprStr(name);
 	char *str=malloc(sizeof(char)*64);
 	sprintf(str,"%d",size);
 	Operand o1=newOprStr(str);
-	addCode(newCode(DEC,o0,o1,NULL,NULL));
+	addCode(newCode(DEC,o,o1,NULL,NULL));
 	size=4;//复位
 	return name;
 }
@@ -77,8 +76,8 @@ char* trsVarDec(struct Node *node,int level,int flag)//局部变量、函数形�
 void trsFunDec(struct Node *node)
 {
 	struct Node *child=node->child;
-	Operand o0=newOprStr(child->name);
-	addCode(newCode(FUNCTION,o0,NULL,NULL,NULL));
+	Operand o=newOprStr(child->name);
+	addCode(newCode(FUNCTION,o,NULL,NULL,NULL));
 	if(!strcmp(child->next->next->type,"RP"))
 		return;
 	trsVarList(child->next->next);	
@@ -99,8 +98,8 @@ void trsParamDec(struct Node *node)
 	struct Node *child=node->child;
 	trsSpecifier(child);
 	char *name=trsVarDec(child->next,0,0);
-	Operand o0=newOprStr(name);
-	addCode(newCode(PARAM,o0,NULL,NULL,NULL));
+	Operand o=newOprStr(name);
+	addCode(newCode(PARAM,o,NULL,NULL,NULL));
 }
 
 void trsCompSt(struct Node *node)
@@ -200,8 +199,8 @@ void trsDec(struct Node *node)
 		return;
 	Operand t=newOprRnd(0);
 	trsExp(child->next->next,t);
-	Operand o0=newOprStr(name);
-	addCode(newCode(ASSIGN,o0,t,NULL,NULL));
+	Operand o=newOprStr(name);
+	addCode(newCode(ASSIGN,o,t,NULL,NULL));
 }
 
 /*返回结果操作数符*/
@@ -290,6 +289,8 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 				addCode(newCode(READ,place,NULL,NULL,NULL));
 				return place;
 			}
+			if(!place)
+				place=newOprRnd(0);
 			addCode(newCode(CALL,place,newOprStr(child->name),NULL,NULL));
 			return place;
 		}
@@ -307,11 +308,8 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 				addCode(newCode(ARG,args,NULL,NULL,NULL));
 				args=args->next;
 			}
-			if(place){
-				addCode(newCode(CALL,place,newOprStr(child->name),NULL,NULL));
-				return place;//函数返回值
-			}
-			place=newOprRnd(0);
+			if(!place)
+				place=newOprRnd(0);
 			addCode(newCode(CALL,place,newOprStr(child->name),NULL,NULL));
 			return place;
 		}
@@ -320,7 +318,7 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 	else if(child->next && !strcmp(child->next->type,"LB")){
 		Operand head,tail;
 		head=tail=NULL;
-		while(child->next){
+		while(child->next){//数组各个维度
 			Operand tmp=newOprRnd(0);
 			trsExp(child->next->next,tmp);
 			if(!head){
@@ -335,21 +333,27 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 			child=child->child;
 		}
 		/*跳出循环后child指向ID*/
-		Operand offset=newOprRnd(0);//偏移
-		addCode(newCode(ASSIGN,offset,newOprStr("#0"),NULL,NULL));
 		struct Record *record=findTable(child->name,0,-1);
 		Type t=record->var->type;
 		int width=4;//宽度
+
+		Operand offset=NULL;//偏移
 		while(head){
 			char *num=malloc(sizeof(char)*64);
 			sprintf(num,"#%d",width);//立即数: 宽度
 			Operand tmpResult=newOprRnd(0);
 			addCode(newCode(MULT,tmpResult,head,newOprStr(num),NULL));
-			addCode(newCode(ADD,offset,offset,tmpResult,NULL));
+			if(offset)
+				addCode(newCode(ADD,offset,offset,tmpResult,NULL));
+			else{
+				offset=newOprRnd(0);
+				addCode(newCode(ADD,offset,newOprStr("#0"),tmpResult,NULL));
+			}
 			width *= t->array.size;
 			head=head->next;
 			t=t->array.elem;
 		}
+
 		Operand addr=NULL;//数组首地址
 		if(!record->var->pos){						/*变量*/
 			char *buf=malloc(sizeof(char)*64);
@@ -358,6 +362,7 @@ Operand trsExp(struct Node *node,Operand place)//place即结果
 			addr=newOprStr(buf);
 		}
 		else addr=newOprStr(child->name);			/*形参*/
+
 		Operand realAddr=newOprRnd(0);//目标地址
 		addCode(newCode(ADD,realAddr,addr,offset,NULL));
 		if(place){
@@ -452,7 +457,7 @@ void trsCond(struct Node *node,Operand labelt,Operand labelf)
 	else{
 		Operand t=newOprRnd(0);
 		trsExp(node,t);
-		addCode(newCode(COND,t,newOprStr("#0"),labelt,newOprStr("!=")));
+		addCode(newCode(COND,t,newOprStr("#0"),labelt,newOprStr("!=")));//从左至右依次
 		addCode(newCode(GOTO,labelf,NULL,NULL,NULL));
 	}
 }
@@ -490,12 +495,12 @@ Operand newOprStr(char *str)
 }
 
 //生成中间代码
-InterCode newCode(enum codeKind  kind,Operand o0,
+InterCode newCode(enum codeKind  kind,Operand o,
 	Operand o1,Operand o2,Operand op)
 {
 	InterCode code=malloc(sizeof(struct InterCode_));
 	code->kind=kind;
-	code->o0=o0;
+	code->o=o;
 	code->o1=o1;
 	code->o2=o2;
 	code->op=op;
@@ -528,61 +533,61 @@ void IRprint(char *outfile)
 	while(head){
 		switch(head->kind){
 			case LABEL:
-				fprintf(fp,"LABEL %s :\n",head->o0->str);
+				fprintf(fp,"LABEL %s :\n",head->o->str);
 				break;
 			case FUNCTION:
-				fprintf(fp,"FUNCTION %s :\n",head->o0->str);
+				fprintf(fp,"FUNCTION %s :\n",head->o->str);
 				break;
 			case ASSIGN:
-				fprintf(fp,"%s := %s\n",head->o0->str,head->o1->str);
+				fprintf(fp,"%s := %s\n",head->o->str,head->o1->str);
 				break;
 			case ADD:
-				fprintf(fp,"%s := %s + %s\n",head->o0->str,head->o1->str,head->o2->str);
+				fprintf(fp,"%s := %s + %s\n",head->o->str,head->o1->str,head->o2->str);
 				break;
 			case SUB:
-				fprintf(fp,"%s := %s - %s\n",head->o0->str,head->o1->str,head->o2->str);
+				fprintf(fp,"%s := %s - %s\n",head->o->str,head->o1->str,head->o2->str);
 				break;
 			case MULT:
-				fprintf(fp,"%s := %s * %s\n",head->o0->str,head->o1->str,head->o2->str);
+				fprintf(fp,"%s := %s * %s\n",head->o->str,head->o1->str,head->o2->str);
 				break;
 			case DV:
-				fprintf(fp,"%s := %s / %s\n",head->o0->str,head->o1->str,head->o2->str);
+				fprintf(fp,"%s := %s / %s\n",head->o->str,head->o1->str,head->o2->str);
 				break;
 			case ADDRESSASSIGN:
-				fprintf(fp,"%s := &%s\n",head->o0->str,head->o1->str);
+				fprintf(fp,"%s := &%s\n",head->o->str,head->o1->str);
 				break;
 			case STARASSIGN:
-				fprintf(fp,"%s := *%s\n",head->o0->str,head->o1->str);
+				fprintf(fp,"%s := *%s\n",head->o->str,head->o1->str);
 				break;
 			case ASSIGNSTAR:
-				fprintf(fp,"*%s := %s\n",head->o0->str,head->o1->str);
+				fprintf(fp,"*%s := %s\n",head->o->str,head->o1->str);
 				break;
 			case GOTO:
-				fprintf(fp,"GOTO %s\n",head->o0->str);
+				fprintf(fp,"GOTO %s\n",head->o->str);
 				break;
 			case COND:
-				fprintf(fp,"IF %s %s %s GOTO %s\n",head->o0->str,head->op->str,head->o1->str,head->o2->str);
+				fprintf(fp,"IF %s %s %s GOTO %s\n",head->o->str,head->op->str,head->o1->str,head->o2->str);
 				break;
 			case RTN:
-				fprintf(fp,"RETURN %s\n",head->o0->str);
+				fprintf(fp,"RETURN %s\n",head->o->str);
 				break;
 			case DEC:
-				fprintf(fp,"DEC %s %s\n",head->o0->str,head->o1->str);
+				fprintf(fp,"DEC %s %s\n",head->o->str,head->o1->str);
 				break;
 			case ARG:
-				fprintf(fp,"ARG %s\n",head->o0->str);
+				fprintf(fp,"ARG %s\n",head->o->str);
 				break;
 			case CALL:
-				fprintf(fp,"%s := CALL %s\n",head->o0->str,head->o1->str);
+				fprintf(fp,"%s := CALL %s\n",head->o->str,head->o1->str);
 				break;
 			case PARAM:
-				fprintf(fp,"PARAM %s\n",head->o0->str);
+				fprintf(fp,"PARAM %s\n",head->o->str);
 				break;
 			case READ:
-				fprintf(fp,"READ %s\n",head->o0->str);
+				fprintf(fp,"READ %s\n",head->o->str);
 				break;
 			case WRITE:
-				fprintf(fp,"WRITE %s\n",head->o0->str);
+				fprintf(fp,"WRITE %s\n",head->o->str);
 				break;
 			default:
 				fprintf(fp,"ERROR\n");
@@ -591,24 +596,92 @@ void IRprint(char *outfile)
 	}
 }
 
+
+//寻找临时变量在中间代码的位置
+InterCode findInterCode(Operand o,InterCode stop)
+{
+	InterCode cur=IRhead;
+	InterCode result=NULL;
+	while(cur && cur!=stop){ 	//当前代码前的最后一次出现
+		if(!strcmp(cur->o->str,o->str))
+			result=cur;
+		cur=cur->next;
+	}
+	return result;
+}
+
+//判断是否为冗余变量
+int isRedundent(Operand o)
+{
+	InterCode cur=IRhead;
+	while(cur){
+		if(cur->o1 && !strcmp(cur->o1->str,o->str))
+			return 0;
+		if(cur->o2 && !strcmp(cur->o2->str,o->str))
+			return 0;
+		if( (cur->kind==RTN 	//出现在RETURN等
+		  || cur->kind==READ || cur->kind==WRITE || cur->kind==PARAM
+		  || cur->kind==ARG || cur->kind==GOTO || cur->kind==FUNCTION
+		  || cur->kind==LABEL || cur->kind==CALL || cur->kind==COND)
+		  && !strcmp(cur->o->str,o->str))
+			return 0;
+		cur=cur->next;
+	}
+	return 1;
+}
+
 /*优化中间代码*/
 void IRopt()
-{
-	//去除冗余赋值，将t=5 a=t优化为a=5
+{	
+	/*Exp优化*/
 	InterCode cur=IRhead;
-	while(cur->next){
-		if(cur->kind==ASSIGN 
-		  && cur->next->kind==ASSIGN
-		  && !strcmp(cur->o0->str,cur->next->o1->str)
-		  && cur->o0->str[0]=='t' //中间变量
-		  && cur->o0->str[1]=='_'
-		  && cur->o0->str[2]=='v') { 
-			InterCode replace=newCode(ASSIGN,cur->next->o0,cur->o1,NULL,NULL);
-			cur->pre->next=replace;//替换
-			replace->pre=cur->pre;
-			replace->next=cur->next->next;
-			cur->next->next->pre=replace;
-		}	
-		cur=cur->next;		
+	while(cur){
+		if(cur->kind==ASSIGN	//ASSIGN 
+		  && cur->o1->str[0]=='t' && cur->o1->str[1]=='_' && cur->o1->str[2]=='v') { 
+			InterCode pre=findInterCode(cur->o1,cur);
+			if(pre->kind==ASSIGN)
+				cur->o1=pre->o1;
+			if(pre->kind==ADD||pre->kind==SUB||pre->kind==MULT||pre->kind==DV){
+				cur->kind=pre->kind;
+				cur->o1=pre->o1;
+				cur->o2=pre->o2;
+			}
+		}
+		if(cur->kind==ADD||cur->kind==SUB||cur->kind==MULT||cur->kind==DV){	//算数运算
+		  	if(cur->o1->str[0]=='t' && cur->o1->str[1]=='_' && cur->o1->str[2]=='v'){
+				InterCode pre=findInterCode(cur->o1,cur);
+				if(pre->kind==ASSIGN)
+					cur->o1=pre->o1;
+			}
+		  	if(cur->o2->str[0]=='t' && cur->o2->str[1]=='_' && cur->o2->str[2]=='v'){
+				InterCode pre=findInterCode(cur->o2,cur);
+				if(pre->kind==ASSIGN)
+					cur->o2=pre->o1;
+			}
+		}
+		cur=cur->next;
+	}
+	/*去除冗余变量*/
+	cur=IRhead;
+	while(cur){
+		if( (cur->kind==ASSIGN
+		  || cur->kind==ADD || cur->kind==SUB || cur->kind==MULT || cur->kind==DV)
+	      && isRedundent(cur->o) ){
+			cur->pre->next=cur->next;
+			cur->next->pre=cur->pre;
+		}
+		cur=cur->next;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

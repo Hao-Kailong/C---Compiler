@@ -2,273 +2,237 @@ FUNCTION countSort :
 DEC x 20
 DEC count 40
 DEC sorted 20
-t0 := #0
-i := t0
-LABEL t1 :
-t4 := i
-t5 := #10
-IF t4 < t5 GOTO t2
-GOTO t3
-LABEL t2 :
-t6 := #0
-t7 := i
-t8 := t7 * #4
-t9 := &count + t8
-*t9 := t6
-t10 := *t9
-t12 := i
-t13 := #1
-t11 := t12 + t13
-i := t11
-GOTO t1
-LABEL t3 :
-t14 := #0
-i := t14
-LABEL t15 :
-t18 := i
-t19 := #5
-IF t18 < t19 GOTO t16
-GOTO t17
-LABEL t16 :
-READ t20
-t21 := i
-t22 := t21 * #4
-t23 := &x + t22
-*t23 := t20
-t24 := *t23
-t29 := i
-t30 := t29 * #4
-t31 := &x + t30
-t28 := *t31
-t32 := t28 * #4
-t33 := &count + t32
-t26 := *t33
-t27 := #1
-t25 := t26 + t27
-t35 := i
-t36 := t35 * #4
-t37 := &x + t36
-t34 := *t37
-t38 := t34 * #4
-t39 := &count + t38
-*t39 := t25
-t40 := *t39
-t42 := i
-t43 := #1
-t41 := t42 + t43
-i := t41
-GOTO t15
-LABEL t17 :
-t44 := #1
-i := t44
-LABEL t45 :
-t48 := i
-t49 := #10
-IF t48 < t49 GOTO t46
-GOTO t47
-LABEL t46 :
-t53 := i
-t54 := t53 * #4
-t55 := &count + t54
-t51 := *t55
-t57 := i
-t58 := #1
-t56 := t57 - t58
-t59 := t56 * #4
-t60 := &count + t59
-t52 := *t60
-t50 := t51 + t52
-t61 := i
-t62 := t61 * #4
-t63 := &count + t62
-*t63 := t50
-t64 := *t63
-t66 := i
-t67 := #1
-t65 := t66 + t67
-i := t65
-GOTO t45
-LABEL t47 :
-t68 := #0
-i := t68
-LABEL t69 :
-t72 := i
-t73 := #5
-IF t72 < t73 GOTO t70
-GOTO t71
-LABEL t70 :
-t75 := i
-t76 := t75 * #4
-t77 := &x + t76
-t74 := *t77
-t82 := i
-t83 := t82 * #4
-t84 := &x + t83
-t81 := *t84
-t85 := t81 * #4
-t86 := &count + t85
-t79 := *t86
-t80 := #1
-t78 := t79 - t80
-t87 := t78 * #4
-t88 := &sorted + t87
-*t88 := t74
-t89 := *t88
-t94 := i
-t95 := t94 * #4
-t96 := &x + t95
-t93 := *t96
-t97 := t93 * #4
-t98 := &count + t97
-t91 := *t98
-t92 := #1
-t90 := t91 - t92
-t100 := i
-t101 := t100 * #4
-t102 := &x + t101
-t99 := *t102
-t103 := t99 * #4
-t104 := &count + t103
-*t104 := t90
-t105 := *t104
-t107 := i
-t108 := #1
-t106 := t107 + t108
-i := t106
-GOTO t69
-LABEL t71 :
-t109 := #0
-i := t109
-LABEL t110 :
-t113 := i
-t114 := #5
-IF t113 < t114 GOTO t111
-GOTO t112
-LABEL t111 :
-t116 := i
-t117 := t116 * #4
-t118 := &sorted + t117
-t115 := *t118
-WRITE t115
-t120 := i
-t121 := #1
-t119 := t120 + t121
-i := t119
-GOTO t110
-LABEL t112 :
-t122 := #0
-RETURN t122
+i := #0
+LABEL label0 :
+t_v1 := i
+t_v2 := #10
+IF t_v1 < t_v2 GOTO label1
+GOTO label2
+LABEL label1 :
+t_v3 := #0
+t_v5 := i * #4
+t_v6 := #0 + t_v5
+t_v7 := &count + t_v6
+*t_v7 := t_v3
+t_v8 := *t_v7
+i := i + #1
+GOTO label0
+LABEL label2 :
+i := #0
+LABEL label3 :
+t_v13 := i
+t_v14 := #5
+IF t_v13 < t_v14 GOTO label4
+GOTO label5
+LABEL label4 :
+READ t_v15
+t_v17 := i * #4
+t_v18 := #0 + t_v17
+t_v19 := &x + t_v18
+*t_v19 := t_v15
+t_v20 := *t_v19
+t_v26 := i * #4
+t_v27 := #0 + t_v26
+t_v28 := &x + t_v27
+t_v24 := *t_v28
+t_v29 := t_v24 * #4
+t_v30 := #0 + t_v29
+t_v31 := &count + t_v30
+t_v22 := *t_v31
+t_v21 := t_v22 + #1
+t_v34 := i * #4
+t_v35 := #0 + t_v34
+t_v36 := &x + t_v35
+t_v32 := *t_v36
+t_v37 := t_v32 * #4
+t_v38 := #0 + t_v37
+t_v39 := &count + t_v38
+*t_v39 := t_v21
+t_v40 := *t_v39
+i := i + #1
+GOTO label3
+LABEL label5 :
+i := #1
+LABEL label6 :
+t_v45 := i
+t_v46 := #10
+IF t_v45 < t_v46 GOTO label7
+GOTO label8
+LABEL label7 :
+t_v51 := i * #4
+t_v52 := #0 + t_v51
+t_v53 := &count + t_v52
+t_v48 := *t_v53
+t_v54 := i - #1
+t_v57 := t_v54 * #4
+t_v58 := #0 + t_v57
+t_v59 := &count + t_v58
+t_v49 := *t_v59
+t_v47 := t_v48 + t_v49
+t_v61 := i * #4
+t_v62 := #0 + t_v61
+t_v63 := &count + t_v62
+*t_v63 := t_v47
+t_v64 := *t_v63
+i := i + #1
+GOTO label6
+LABEL label8 :
+i := #0
+LABEL label9 :
+t_v69 := i
+t_v70 := #5
+IF t_v69 < t_v70 GOTO label10
+GOTO label11
+LABEL label10 :
+t_v73 := i * #4
+t_v74 := #0 + t_v73
+t_v75 := &x + t_v74
+t_v71 := *t_v75
+t_v81 := i * #4
+t_v82 := #0 + t_v81
+t_v83 := &x + t_v82
+t_v79 := *t_v83
+t_v84 := t_v79 * #4
+t_v85 := #0 + t_v84
+t_v86 := &count + t_v85
+t_v77 := *t_v86
+t_v76 := t_v77 - #1
+t_v87 := t_v76 * #4
+t_v88 := #0 + t_v87
+t_v89 := &sorted + t_v88
+*t_v89 := t_v71
+t_v90 := *t_v89
+t_v96 := i * #4
+t_v97 := #0 + t_v96
+t_v98 := &x + t_v97
+t_v94 := *t_v98
+t_v99 := t_v94 * #4
+t_v100 := #0 + t_v99
+t_v101 := &count + t_v100
+t_v92 := *t_v101
+t_v91 := t_v92 - #1
+t_v104 := i * #4
+t_v105 := #0 + t_v104
+t_v106 := &x + t_v105
+t_v102 := *t_v106
+t_v107 := t_v102 * #4
+t_v108 := #0 + t_v107
+t_v109 := &count + t_v108
+*t_v109 := t_v91
+t_v110 := *t_v109
+i := i + #1
+GOTO label9
+LABEL label11 :
+i := #0
+LABEL label12 :
+t_v115 := i
+t_v116 := #5
+IF t_v115 < t_v116 GOTO label13
+GOTO label14
+LABEL label13 :
+t_v119 := i * #4
+t_v120 := #0 + t_v119
+t_v121 := &sorted + t_v120
+t_v117 := *t_v121
+WRITE t_v117
+i := i + #1
+GOTO label12
+LABEL label14 :
+t_v125 := #0
+RETURN t_v125
 FUNCTION bubbleSort :
 DEC a 20
-t123 := #0
-b := t123
-LABEL t124 :
-t127 := b
-t128 := #5
-IF t127 < t128 GOTO t125
-GOTO t126
-LABEL t125 :
-READ t129
-t130 := b
-t131 := t130 * #4
-t132 := &a + t131
-*t132 := t129
-t133 := *t132
-t135 := b
-t136 := #1
-t134 := t135 + t136
-b := t134
-GOTO t124
-LABEL t126 :
-t137 := #1
-c := t137
-LABEL t138 :
-t141 := c
-t142 := #1
-IF t141 == t142 GOTO t139
-GOTO t140
-LABEL t139 :
-t143 := #0
-c := t143
-t144 := #1
-b := t144
-LABEL t145 :
-t148 := b
-t149 := #5
-IF t148 < t149 GOTO t146
-GOTO t147
-LABEL t146 :
-t154 := b
-t155 := t154 * #4
-t156 := &a + t155
-t152 := *t156
-t158 := b
-t159 := #1
-t157 := t158 - t159
-t160 := t157 * #4
-t161 := &a + t160
-t153 := *t161
-IF t152 < t153 GOTO t150
-GOTO t151
-LABEL t150 :
-t162 := #1
-c := t162
-t165 := b
-t166 := #1
-t164 := t165 - t166
-t167 := t164 * #4
-t168 := &a + t167
-t163 := *t168
-tem := t163
-t170 := b
-t171 := t170 * #4
-t172 := &a + t171
-t169 := *t172
-t174 := b
-t175 := #1
-t173 := t174 - t175
-t176 := t173 * #4
-t177 := &a + t176
-*t177 := t169
-t178 := *t177
-t179 := tem
-t180 := b
-t181 := t180 * #4
-t182 := &a + t181
-*t182 := t179
-t183 := *t182
-LABEL t151 :
-t185 := b
-t186 := #1
-t184 := t185 + t186
-b := t184
-GOTO t145
-LABEL t147 :
-GOTO t138
-LABEL t140 :
-t187 := #0
-b := t187
-LABEL t188 :
-t191 := b
-t192 := #5
-IF t191 < t192 GOTO t189
-GOTO t190
-LABEL t189 :
-t194 := b
-t195 := t194 * #4
-t196 := &a + t195
-t193 := *t196
-WRITE t193
-t198 := b
-t199 := #1
-t197 := t198 + t199
-b := t197
-GOTO t188
-LABEL t190 :
-t200 := #0
-RETURN t200
+b := #0
+LABEL label15 :
+t_v127 := b
+t_v128 := #5
+IF t_v127 < t_v128 GOTO label16
+GOTO label17
+LABEL label16 :
+READ t_v129
+t_v131 := b * #4
+t_v132 := #0 + t_v131
+t_v133 := &a + t_v132
+*t_v133 := t_v129
+t_v134 := *t_v133
+b := b + #1
+GOTO label15
+LABEL label17 :
+c := #1
+LABEL label18 :
+t_v139 := c
+t_v140 := #1
+IF t_v139 == t_v140 GOTO label19
+GOTO label20
+LABEL label19 :
+c := #0
+b := #1
+LABEL label21 :
+t_v143 := b
+t_v144 := #5
+IF t_v143 < t_v144 GOTO label22
+GOTO label23
+LABEL label22 :
+t_v148 := b * #4
+t_v149 := #0 + t_v148
+t_v150 := &a + t_v149
+t_v145 := *t_v150
+t_v151 := b - #1
+t_v154 := t_v151 * #4
+t_v155 := #0 + t_v154
+t_v156 := &a + t_v155
+t_v146 := *t_v156
+IF t_v145 < t_v146 GOTO label24
+GOTO label25
+LABEL label24 :
+c := #1
+t_v159 := b - #1
+t_v162 := t_v159 * #4
+t_v163 := #0 + t_v162
+t_v164 := &a + t_v163
+t_v158 := *t_v164
+tem := t_v158
+t_v167 := b * #4
+t_v168 := #0 + t_v167
+t_v169 := &a + t_v168
+t_v165 := *t_v169
+t_v170 := b - #1
+t_v173 := t_v170 * #4
+t_v174 := #0 + t_v173
+t_v175 := &a + t_v174
+*t_v175 := t_v165
+t_v176 := *t_v175
+t_v177 := tem
+t_v179 := b * #4
+t_v180 := #0 + t_v179
+t_v181 := &a + t_v180
+*t_v181 := t_v177
+t_v182 := *t_v181
+LABEL label25 :
+b := b + #1
+GOTO label21
+LABEL label23 :
+GOTO label18
+LABEL label20 :
+b := #0
+LABEL label26 :
+t_v187 := b
+t_v188 := #5
+IF t_v187 < t_v188 GOTO label27
+GOTO label28
+LABEL label27 :
+t_v191 := b * #4
+t_v192 := #0 + t_v191
+t_v193 := &a + t_v192
+t_v189 := *t_v193
+WRITE t_v189
+b := b + #1
+GOTO label26
+LABEL label28 :
+t_v197 := #0
+RETURN t_v197
 FUNCTION main :
-(null) := CALL countSort
-(null) := CALL bubbleSort
-t201 := #0
-RETURN t201
+t_v198 := CALL countSort
+t_v199 := CALL bubbleSort
+t_v200 := #0
+RETURN t_v200

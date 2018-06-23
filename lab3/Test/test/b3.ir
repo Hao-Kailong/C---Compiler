@@ -1,137 +1,120 @@
 FUNCTION search :
 PARAM target
 DEC x 20
-t0 := #0
-i := t0
-LABEL t1 :
-t4 := i
-t5 := #5
-IF t4 < t5 GOTO t2
-GOTO t3
-LABEL t2 :
-READ t6
-t7 := i
-t8 := t7 * #4
-t9 := &x + t8
-*t9 := t6
-t10 := *t9
-t12 := i
-t13 := #1
-t11 := t12 + t13
-i := t11
-GOTO t1
-LABEL t3 :
-t14 := #0
-left := t14
-t15 := #4
-right := t15
-LABEL t16 :
-t19 := left
-t20 := right
-IF t19 <= t20 GOTO t17
-GOTO t18
-LABEL t17 :
-t24 := left
-t25 := right
-t22 := t24 + t25
-t23 := #2
-t21 := t22 / t23
-index := t21
-t27 := index
-t28 := t27 * #4
-t29 := &x + t28
-t26 := *t29
-middle := t26
-t32 := middle
-t33 := target
-IF t32 == t33 GOTO t30
-GOTO t31
-LABEL t30 :
-t34 := index
-RETURN t34
-LABEL t31 :
-t39 := #0
-t44 := middle
-t46 := left
-t47 := t46 * #4
-t48 := &x + t47
-t45 := *t48
-IF t44 > t45 GOTO t43
-GOTO t41
-LABEL t43 :
-t49 := target
-t51 := left
-t52 := t51 * #4
-t53 := &x + t52
-t50 := *t53
-IF t49 >= t50 GOTO t42
-GOTO t41
-LABEL t42 :
-t54 := target
-t55 := middle
-IF t54 < t55 GOTO t40
-GOTO t41
-LABEL t40 :
-t39 := #1
-LABEL t41 :
-IF t39 != #0 GOTO t35
-GOTO t38
-LABEL t38 :
-t56 := #0
-t60 := middle
-t62 := left
-t63 := t62 * #4
-t64 := &x + t63
-t61 := *t64
-IF t60 < t61 GOTO t59
-GOTO t58
-LABEL t59 :
-t65 := #0
-t69 := target
-t71 := left
-t72 := t71 * #4
-t73 := &x + t72
-t70 := *t73
-IF t69 >= t70 GOTO t66
-GOTO t68
-LABEL t68 :
-t74 := target
-t75 := middle
-IF t74 < t75 GOTO t66
-GOTO t67
-LABEL t66 :
-t65 := #1
-LABEL t67 :
-IF t65 != #0 GOTO t57
-GOTO t58
-LABEL t57 :
-t56 := #1
-LABEL t58 :
-IF t56 != #0 GOTO t35
-GOTO t36
-LABEL t35 :
-t77 := index
-t78 := #1
-t76 := t77 - t78
-right := t76
-GOTO t37
-LABEL t36 :
-t80 := index
-t81 := #1
-t79 := t80 + t81
-left := t79
-LABEL t37 :
-GOTO t16
-LABEL t18 :
-t83 := #1
-t82 := #0 - t83
-RETURN t82
+i := #0
+LABEL label0 :
+t_v1 := i
+t_v2 := #5
+IF t_v1 < t_v2 GOTO label1
+GOTO label2
+LABEL label1 :
+READ t_v3
+t_v5 := i * #4
+t_v6 := #0 + t_v5
+t_v7 := &x + t_v6
+*t_v7 := t_v3
+t_v8 := *t_v7
+i := i + #1
+GOTO label0
+LABEL label2 :
+left := #0
+right := #4
+LABEL label3 :
+t_v14 := left
+t_v15 := right
+IF t_v14 <= t_v15 GOTO label4
+GOTO label5
+LABEL label4 :
+t_v17 := left + right
+index := t_v17 / #2
+t_v23 := index * #4
+t_v24 := #0 + t_v23
+t_v25 := &x + t_v24
+t_v21 := *t_v25
+middle := t_v21
+t_v26 := middle
+t_v27 := target
+IF t_v26 == t_v27 GOTO label6
+GOTO label7
+LABEL label6 :
+t_v28 := index
+RETURN t_v28
+LABEL label7 :
+t_v29 := #0
+t_v30 := middle
+t_v33 := left * #4
+t_v34 := #0 + t_v33
+t_v35 := &x + t_v34
+t_v31 := *t_v35
+IF t_v30 > t_v31 GOTO label15
+GOTO label13
+LABEL label15 :
+t_v36 := target
+t_v39 := left * #4
+t_v40 := #0 + t_v39
+t_v41 := &x + t_v40
+t_v37 := *t_v41
+IF t_v36 >= t_v37 GOTO label14
+GOTO label13
+LABEL label14 :
+t_v42 := target
+t_v43 := middle
+IF t_v42 < t_v43 GOTO label12
+GOTO label13
+LABEL label12 :
+t_v29 := #1
+LABEL label13 :
+IF t_v29 != #0 GOTO label8
+GOTO label11
+LABEL label11 :
+t_v44 := #0
+t_v45 := middle
+t_v48 := left * #4
+t_v49 := #0 + t_v48
+t_v50 := &x + t_v49
+t_v46 := *t_v50
+IF t_v45 < t_v46 GOTO label18
+GOTO label17
+LABEL label18 :
+t_v51 := #0
+t_v52 := target
+t_v55 := left * #4
+t_v56 := #0 + t_v55
+t_v57 := &x + t_v56
+t_v53 := *t_v57
+IF t_v52 >= t_v53 GOTO label19
+GOTO label21
+LABEL label21 :
+t_v58 := target
+t_v59 := middle
+IF t_v58 < t_v59 GOTO label19
+GOTO label20
+LABEL label19 :
+t_v51 := #1
+LABEL label20 :
+IF t_v51 != #0 GOTO label16
+GOTO label17
+LABEL label16 :
+t_v44 := #1
+LABEL label17 :
+IF t_v44 != #0 GOTO label8
+GOTO label9
+LABEL label8 :
+right := index - #1
+GOTO label10
+LABEL label9 :
+left := index + #1
+LABEL label10 :
+GOTO label3
+LABEL label5 :
+t_v66 := #0 - #1
+RETURN t_v66
 FUNCTION main :
-READ t84
-n := t84
-t86 := n
-ARG t86
-t85 := CALL search
-WRITE t85
-t87 := #0
-RETURN t87
+READ t_v68
+n := t_v68
+t_v70 := n
+ARG t_v70
+t_v69 := CALL search
+WRITE t_v69
+t_v71 := #0
+RETURN t_v71

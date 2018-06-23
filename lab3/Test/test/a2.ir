@@ -1,79 +1,67 @@
 FUNCTION main :
-READ t0
-dollar := t0
-READ t1
-rmb := t1
-t5 := dollar
-t6 := #100
-IF t5 > t6 GOTO t2
-GOTO t3
-LABEL t2 :
-t10 := rmb
-t11 := #50
-IF t10 < t11 GOTO t7
-GOTO t8
-LABEL t7 :
-t13 := rmb
-t14 := dollar
-t12 := t13 + t14
-WRITE t12
-GOTO t9
-LABEL t8 :
-t16 := rmb
-t17 := dollar
-t15 := t16 - t17
-WRITE t15
-LABEL t9 :
-GOTO t4
-LABEL t3 :
-t21 := dollar
-t22 := #100
-IF t21 == t22 GOTO t18
-GOTO t19
-LABEL t18 :
-t26 := rmb
-t27 := #100
-IF t26 < t27 GOTO t23
-GOTO t24
-LABEL t23 :
-t28 := rmb
-WRITE t28
-GOTO t25
-LABEL t24 :
-t30 := rmb
-t31 := #100
-t29 := t30 - t31
-WRITE t29
-LABEL t25 :
-GOTO t20
-LABEL t19 :
-t34 := dollar
-t35 := #100
-IF t34 < t35 GOTO t32
-GOTO t33
-LABEL t32 :
-t41 := rmb
-t42 := dollar
-t39 := t41 + t42
-t40 := #100
-IF t39 > t40 GOTO t36
-GOTO t37
-LABEL t36 :
-t44 := dollar
-t45 := #100
-t43 := t44 + t45
-WRITE t43
-GOTO t38
-LABEL t37 :
-t46 := #100
-WRITE t46
-LABEL t38 :
-LABEL t33 :
-LABEL t20 :
-LABEL t4 :
-t48 := dollar
-t49 := rmb
-t47 := t48 + t49
-WRITE t47
-t50 := #0
-RETURN t50
+READ t_v0
+dollar := t_v0
+READ t_v1
+rmb := t_v1
+t_v2 := dollar
+t_v3 := #100
+IF t_v2 > t_v3 GOTO label0
+GOTO label1
+LABEL label0 :
+t_v4 := rmb
+t_v5 := #50
+IF t_v4 < t_v5 GOTO label3
+GOTO label4
+LABEL label3 :
+t_v6 := rmb + dollar
+WRITE t_v6
+GOTO label5
+LABEL label4 :
+t_v9 := rmb - dollar
+WRITE t_v9
+LABEL label5 :
+GOTO label2
+LABEL label1 :
+t_v12 := dollar
+t_v13 := #100
+IF t_v12 == t_v13 GOTO label6
+GOTO label7
+LABEL label6 :
+t_v14 := rmb
+t_v15 := #100
+IF t_v14 < t_v15 GOTO label9
+GOTO label10
+LABEL label9 :
+t_v16 := rmb
+WRITE t_v16
+GOTO label11
+LABEL label10 :
+t_v17 := rmb - #100
+WRITE t_v17
+LABEL label11 :
+GOTO label8
+LABEL label7 :
+t_v20 := dollar
+t_v21 := #100
+IF t_v20 < t_v21 GOTO label12
+GOTO label13
+LABEL label12 :
+t_v22 := rmb + dollar
+t_v23 := #100
+IF t_v22 > t_v23 GOTO label14
+GOTO label15
+LABEL label14 :
+t_v26 := dollar + #100
+WRITE t_v26
+GOTO label16
+LABEL label15 :
+t_v29 := #100
+WRITE t_v29
+LABEL label16 :
+LABEL label13 :
+LABEL label8 :
+LABEL label2 :
+t_v30 := dollar + rmb
+WRITE t_v30
+t_v33 := #0
+RETURN t_v33

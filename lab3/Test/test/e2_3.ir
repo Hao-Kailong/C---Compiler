@@ -6,11 +6,9 @@ DEC board 400
 i1 := #0
 j1 := #0
 tem := #1
-t_v5 := #0
-t_v6 := #0
-t_v7 := t_v5 * #4
-t_v6 := t_v6 + t_v7
-t_v8 := number + t_v6
+t_v6 := #0 * #4
+t_v7 := #0 + t_v6
+t_v8 := number + t_v7
 t_v3 := *t_v8
 t_v4 := #1
 IF t_v3 == t_v4 GOTO label0
@@ -31,62 +29,41 @@ IF t_v13 < t_v14 GOTO label6
 GOTO label7
 LABEL label6 :
 t_v15 := j1
-t_v17 := i1
-t_v18 := #0
-t_v19 := t_v17 * #4
-t_v18 := t_v18 + t_v19
-t_v20 := chess + t_v18
+t_v18 := i1 * #4
+t_v19 := #0 + t_v18
+t_v20 := chess + t_v19
 t_v16 := *t_v20
 IF t_v15 == t_v16 GOTO label8
 GOTO label9
 LABEL label8 :
 t_v21 := #1
-t_v22 := j1
-t_v23 := i1
-t_v24 := #0
-t_v25 := t_v22 * #4
-t_v24 := t_v24 + t_v25
-t_v26 := t_v23 * #40
-t_v24 := t_v24 + t_v26
-t_v27 := &board + t_v24
+t_v24 := j1 * #4
+t_v25 := #0 + t_v24
+t_v26 := i1 * #40
+t_v25 := t_v25 + t_v26
+t_v27 := &board + t_v25
 *t_v27 := t_v21
 t_v28 := *t_v27
-t_v32 := tem
-t_v33 := #10
-t_v30 := t_v32 * t_v33
-t_v31 := #1
-t_v29 := t_v30 + t_v31
-tem := t_v29
+t_v30 := tem * #10
+tem := t_v30 + #1
 GOTO label10
 LABEL label9 :
 t_v34 := #0
-t_v35 := j1
-t_v36 := i1
-t_v37 := #0
-t_v38 := t_v35 * #4
-t_v37 := t_v37 + t_v38
-t_v39 := t_v36 * #40
-t_v37 := t_v37 + t_v39
-t_v40 := &board + t_v37
+t_v37 := j1 * #4
+t_v38 := #0 + t_v37
+t_v39 := i1 * #40
+t_v38 := t_v38 + t_v39
+t_v40 := &board + t_v38
 *t_v40 := t_v34
 t_v41 := *t_v40
-t_v43 := tem
-t_v44 := #10
-t_v42 := t_v43 * t_v44
-tem := t_v42
+tem := tem * #10
 LABEL label10 :
-t_v46 := j1
-t_v47 := #1
-t_v45 := t_v46 + t_v47
-j1 := t_v45
+j1 := j1 + #1
 GOTO label5
 LABEL label7 :
 t_v48 := tem
 WRITE t_v48
-t_v50 := i1
-t_v51 := #1
-t_v49 := t_v50 + t_v51
-i1 := t_v49
+i1 := i1 + #1
 GOTO label2
 LABEL label4 :
 LABEL label1 :
@@ -108,19 +85,14 @@ t_v55 := target
 IF t_v54 == t_v55 GOTO label11
 GOTO label12
 LABEL label11 :
-t_v59 := #0
-t_v60 := #0
-t_v61 := t_v59 * #4
-t_v60 := t_v60 + t_v61
-t_v62 := c + t_v60
+t_v60 := #0 * #4
+t_v61 := #0 + t_v60
+t_v62 := c + t_v61
 t_v57 := *t_v62
-t_v58 := #1
-t_v56 := t_v57 + t_v58
-t_v63 := #0
-t_v64 := #0
-t_v65 := t_v63 * #4
-t_v64 := t_v64 + t_v65
-t_v66 := c + t_v64
+t_v56 := t_v57 + #1
+t_v64 := #0 * #4
+t_v65 := #0 + t_v64
+t_v66 := c + t_v65
 *t_v66 := t_v56
 t_v67 := *t_v66
 t_v68 := p
@@ -139,90 +111,67 @@ t_v74 := target
 IF t_v73 < t_v74 GOTO label14
 GOTO label15
 LABEL label14 :
-t_v77 := j
-t_v78 := #0
-t_v79 := t_v77 * #4
-t_v78 := t_v78 + t_v79
-t_v80 := r + t_v78
+t_v78 := j * #4
+t_v79 := #0 + t_v78
+t_v80 := r + t_v79
 t_v75 := *t_v80
 t_v76 := #1
 IF t_v75 == t_v76 GOTO label19
 GOTO label17
 LABEL label19 :
-t_v83 := j
-t_v84 := #0
-t_v85 := t_v83 * #4
-t_v84 := t_v84 + t_v85
-t_v86 := ld + t_v84
+t_v84 := j * #4
+t_v85 := #0 + t_v84
+t_v86 := ld + t_v85
 t_v81 := *t_v86
 t_v82 := #1
 IF t_v81 == t_v82 GOTO label18
 GOTO label17
 LABEL label18 :
-t_v89 := j
-t_v90 := #0
-t_v91 := t_v89 * #4
-t_v90 := t_v90 + t_v91
-t_v92 := rd + t_v90
+t_v90 := j * #4
+t_v91 := #0 + t_v90
+t_v92 := rd + t_v91
 t_v87 := *t_v92
 t_v88 := #1
 IF t_v87 == t_v88 GOTO label16
 GOTO label17
 LABEL label16 :
 t_v93 := j
-t_v94 := current
-t_v95 := #0
-t_v96 := t_v94 * #4
-t_v95 := t_v95 + t_v96
-t_v97 := p + t_v95
+t_v95 := current * #4
+t_v96 := #0 + t_v95
+t_v97 := p + t_v96
 *t_v97 := t_v93
 t_v98 := *t_v97
 t_v99 := #0
-t_v100 := j
-t_v101 := #0
-t_v102 := t_v100 * #4
-t_v101 := t_v101 + t_v102
-t_v103 := r + t_v101
+t_v101 := j * #4
+t_v102 := #0 + t_v101
+t_v103 := r + t_v102
 *t_v103 := t_v99
 t_v104 := *t_v103
 k := #0
 LABEL label20 :
 t_v106 := k
-t_v108 := target
-t_v109 := #1
-t_v107 := t_v108 - t_v109
+t_v107 := target - #1
 IF t_v106 < t_v107 GOTO label21
 GOTO label22
 LABEL label21 :
-t_v112 := k
-t_v113 := #1
-t_v111 := t_v112 + t_v113
-t_v114 := #0
-t_v115 := t_v111 * #4
-t_v114 := t_v114 + t_v115
-t_v116 := ld + t_v114
+t_v111 := k + #1
+t_v114 := t_v111 * #4
+t_v115 := #0 + t_v114
+t_v116 := ld + t_v115
 t_v110 := *t_v116
-t_v117 := k
-t_v118 := #0
-t_v119 := t_v117 * #4
-t_v118 := t_v118 + t_v119
-t_v120 := &nld + t_v118
+t_v118 := k * #4
+t_v119 := #0 + t_v118
+t_v120 := &nld + t_v119
 *t_v120 := t_v110
 t_v121 := *t_v120
-t_v123 := k
-t_v124 := #1
-t_v122 := t_v123 + t_v124
-k := t_v122
+k := k + #1
 GOTO label20
 LABEL label22 :
 t_v125 := #1
-t_v127 := target
-t_v128 := #1
-t_v126 := t_v127 - t_v128
-t_v129 := #0
-t_v130 := t_v126 * #4
-t_v129 := t_v129 + t_v130
-t_v131 := &nld + t_v129
+t_v126 := target - #1
+t_v129 := t_v126 * #4
+t_v130 := #0 + t_v129
+t_v131 := &nld + t_v130
 *t_v131 := t_v125
 t_v132 := *t_v131
 t_v133 := j
@@ -231,70 +180,49 @@ IF t_v133 != t_v134 GOTO label23
 GOTO label24
 LABEL label23 :
 t_v135 := #0
-t_v137 := j
-t_v138 := #1
-t_v136 := t_v137 - t_v138
-t_v139 := #0
-t_v140 := t_v136 * #4
-t_v139 := t_v139 + t_v140
-t_v141 := &nld + t_v139
+t_v136 := j - #1
+t_v139 := t_v136 * #4
+t_v140 := #0 + t_v139
+t_v141 := &nld + t_v140
 *t_v141 := t_v135
 t_v142 := *t_v141
 LABEL label24 :
-t_v144 := target
-t_v145 := #1
-t_v143 := t_v144 - t_v145
-k := t_v143
+k := target - #1
 LABEL label25 :
 t_v146 := k
 t_v147 := #0
 IF t_v146 > t_v147 GOTO label26
 GOTO label27
 LABEL label26 :
-t_v150 := k
-t_v151 := #1
-t_v149 := t_v150 - t_v151
-t_v152 := #0
-t_v153 := t_v149 * #4
-t_v152 := t_v152 + t_v153
-t_v154 := rd + t_v152
+t_v149 := k - #1
+t_v152 := t_v149 * #4
+t_v153 := #0 + t_v152
+t_v154 := rd + t_v153
 t_v148 := *t_v154
-t_v155 := k
-t_v156 := #0
-t_v157 := t_v155 * #4
-t_v156 := t_v156 + t_v157
-t_v158 := &nrd + t_v156
+t_v156 := k * #4
+t_v157 := #0 + t_v156
+t_v158 := &nrd + t_v157
 *t_v158 := t_v148
 t_v159 := *t_v158
-t_v161 := k
-t_v162 := #1
-t_v160 := t_v161 - t_v162
-k := t_v160
+k := k - #1
 GOTO label25
 LABEL label27 :
 t_v163 := #1
-t_v164 := #0
-t_v165 := #0
-t_v166 := t_v164 * #4
-t_v165 := t_v165 + t_v166
-t_v167 := &nrd + t_v165
+t_v165 := #0 * #4
+t_v166 := #0 + t_v165
+t_v167 := &nrd + t_v166
 *t_v167 := t_v163
 t_v168 := *t_v167
 t_v169 := j
-t_v171 := target
-t_v172 := #1
-t_v170 := t_v171 - t_v172
+t_v170 := target - #1
 IF t_v169 != t_v170 GOTO label28
 GOTO label29
 LABEL label28 :
 t_v173 := #0
-t_v175 := j
-t_v176 := #1
-t_v174 := t_v175 + t_v176
-t_v177 := #0
-t_v178 := t_v174 * #4
-t_v177 := t_v177 + t_v178
-t_v179 := &nrd + t_v177
+t_v174 := j + #1
+t_v177 := t_v174 * #4
+t_v178 := #0 + t_v177
+t_v179 := &nrd + t_v178
 *t_v179 := t_v173
 t_v180 := *t_v179
 LABEL label29 :
@@ -302,9 +230,7 @@ t_v181 := p
 t_v182 := r
 t_v183 := &nld
 t_v184 := &nrd
-t_v186 := current
-t_v187 := #1
-t_v185 := t_v186 + t_v187
+t_v185 := current + #1
 t_v188 := target
 t_v189 := c
 ARG t_v189
@@ -316,18 +242,13 @@ ARG t_v182
 ARG t_v181
 t_v190 := CALL dfs
 t_v191 := #1
-t_v192 := j
-t_v193 := #0
-t_v194 := t_v192 * #4
-t_v193 := t_v193 + t_v194
-t_v195 := r + t_v193
+t_v193 := j * #4
+t_v194 := #0 + t_v193
+t_v195 := r + t_v194
 *t_v195 := t_v191
 t_v196 := *t_v195
 LABEL label17 :
-t_v198 := j
-t_v199 := #1
-t_v197 := t_v198 + t_v199
-j := t_v197
+j := j + #1
 GOTO label13
 LABEL label15 :
 t_v200 := #0
@@ -361,41 +282,30 @@ IF t_v208 < t_v209 GOTO label34
 GOTO label35
 LABEL label34 :
 t_v210 := #1
-t_v211 := i
-t_v212 := #0
-t_v213 := t_v211 * #4
-t_v212 := t_v212 + t_v213
-t_v214 := &row + t_v212
+t_v212 := i * #4
+t_v213 := #0 + t_v212
+t_v214 := &row + t_v213
 *t_v214 := t_v210
 t_v215 := *t_v214
 t_v216 := #1
-t_v217 := i
-t_v218 := #0
-t_v219 := t_v217 * #4
-t_v218 := t_v218 + t_v219
-t_v220 := &ldiag + t_v218
+t_v218 := i * #4
+t_v219 := #0 + t_v218
+t_v220 := &ldiag + t_v219
 *t_v220 := t_v216
 t_v221 := *t_v220
 t_v222 := #1
-t_v223 := i
-t_v224 := #0
-t_v225 := t_v223 * #4
-t_v224 := t_v224 + t_v225
-t_v226 := &rdiag + t_v224
+t_v224 := i * #4
+t_v225 := #0 + t_v224
+t_v226 := &rdiag + t_v225
 *t_v226 := t_v222
 t_v227 := *t_v226
-t_v229 := i
-t_v230 := #1
-t_v228 := t_v229 + t_v230
-i := t_v228
+i := i + #1
 GOTO label33
 LABEL label35 :
 t_v231 := #0
-t_v232 := #0
-t_v233 := #0
-t_v234 := t_v232 * #4
-t_v233 := t_v233 + t_v234
-t_v235 := &count + t_v233
+t_v233 := #0 * #4
+t_v234 := #0 + t_v233
+t_v235 := &count + t_v234
 *t_v235 := t_v231
 t_v236 := *t_v235
 t_v237 := &place
@@ -413,11 +323,9 @@ ARG t_v239
 ARG t_v238
 ARG t_v237
 t_v244 := CALL dfs
-t_v246 := #0
-t_v247 := #0
-t_v248 := t_v246 * #4
-t_v247 := t_v247 + t_v248
-t_v249 := &count + t_v247
+t_v247 := #0 * #4
+t_v248 := #0 + t_v247
+t_v249 := &count + t_v248
 t_v245 := *t_v249
 WRITE t_v245
 t_v250 := #0

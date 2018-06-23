@@ -1,58 +1,50 @@
 FUNCTION swap :
 PARAM a
 PARAM b
-t0 := a
-tem := t0
-t1 := b
-a := t1
-t2 := tem
-b := t2
-t3 := a
-WRITE t3
-t4 := b
-WRITE t4
-t5 := a
-RETURN t5
+tem := a
+a := b
+b := tem
+t_v3 := a
+WRITE t_v3
+t_v4 := b
+WRITE t_v4
+t_v5 := a
+RETURN t_v5
 FUNCTION main :
 DEC x 20
-t6 := #0
-i := t6
-LABEL t7 :
-t10 := i
-t11 := #5
-IF t10 < t11 GOTO t8
-GOTO t9
-LABEL t8 :
-READ t12
-t13 := i
-t14 := t13 * #4
-t15 := &x + t14
-*t15 := t12
-t16 := *t15
-t19 := i
-t20 := #0
-IF t19 > t20 GOTO t17
-GOTO t18
-LABEL t17 :
-t23 := i
-t24 := #1
-t22 := t23 - t24
-t25 := t22 * #4
-t26 := &x + t25
-t21 := *t26
-t28 := i
-t29 := t28 * #4
-t30 := &x + t29
-t27 := *t30
-ARG t27
-ARG t21
-t31 := CALL swap
-LABEL t18 :
-t33 := i
-t34 := #1
-t32 := t33 + t34
-i := t32
-GOTO t7
-LABEL t9 :
-t35 := #0
-RETURN t35
+i := #0
+LABEL label0 :
+t_v7 := i
+t_v8 := #5
+IF t_v7 < t_v8 GOTO label1
+GOTO label2
+LABEL label1 :
+READ t_v9
+t_v11 := i * #4
+t_v12 := #0 + t_v11
+t_v13 := &x + t_v12
+*t_v13 := t_v9
+t_v14 := *t_v13
+t_v15 := i
+t_v16 := #0
+IF t_v15 > t_v16 GOTO label3
+GOTO label4
+LABEL label3 :
+t_v18 := i - #1
+t_v21 := t_v18 * #4
+t_v22 := #0 + t_v21
+t_v23 := &x + t_v22
+t_v17 := *t_v23
+t_v26 := i * #4
+t_v27 := #0 + t_v26
+t_v28 := &x + t_v27
+t_v24 := *t_v28
+ARG t_v24
+ARG t_v17
+t_v29 := CALL swap
+LABEL label4 :
+i := i + #1
+GOTO label0
+LABEL label2 :
+t_v33 := #0
+RETURN t_v33

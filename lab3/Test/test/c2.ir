@@ -8,212 +8,153 @@ n := #12
 rh := #0
 DEC height 48
 LABEL label0 :
-t7 := i
-t8 := n
-IF t7 < t8 GOTO label1
+t_v7 := i
+t_v8 := n
+IF t_v7 < t_v8 GOTO label1
 GOTO label2
 LABEL label1 :
-READ t9
-t10 := i
-t11 := #0
-t12 := t10 * #4
-t11 := t11 + t12
-t13 := &height + t11
-*t13 := t9
-t14 := *t13
-t16 := i
-t17 := #1
-t15 := t16 + t17
-i := t15
+READ t_v9
+t_v11 := i * #4
+t_v12 := #0 + t_v11
+t_v13 := &height + t_v12
+*t_v13 := t_v9
+t_v14 := *t_v13
+i := i + #1
 GOTO label0
 LABEL label2 :
 i := #0
 LABEL label3 :
-t19 := i
-t20 := n
-IF t19 < t20 GOTO label6
+t_v19 := i
+t_v20 := n
+IF t_v19 < t_v20 GOTO label6
 GOTO label5
 LABEL label6 :
-t23 := i
-t24 := #0
-t25 := t23 * #4
-t24 := t24 + t25
-t26 := &height + t24
-t21 := *t26
-t22 := #0
-IF t21 == t22 GOTO label4
+t_v24 := i * #4
+t_v25 := #0 + t_v24
+t_v26 := &height + t_v25
+t_v21 := *t_v26
+t_v22 := #0
+IF t_v21 == t_v22 GOTO label4
 GOTO label5
 LABEL label4 :
-t28 := i
-t29 := #1
-t27 := t28 + t29
-i := t27
+i := i + #1
 GOTO label3
 LABEL label5 :
-t30 := i
-t31 := n
-IF t30 >= t31 GOTO label7
+t_v30 := i
+t_v31 := n
+IF t_v30 >= t_v31 GOTO label7
 GOTO label8
 LABEL label7 :
-t32 := #0
-RETURN t32
+t_v32 := #0
+RETURN t_v32
 LABEL label8 :
-t34 := i
-t35 := #0
-t36 := t34 * #4
-t35 := t35 + t36
-t37 := &height + t35
-t33 := *t37
-lh := t33
+t_v35 := i * #4
+t_v36 := #0 + t_v35
+t_v37 := &height + t_v36
+t_v33 := *t_v37
+lh := t_v33
 lIndex := i
 thisPool := #0
-t41 := i
-t42 := #1
-t40 := t41 + t42
-i := t40
+i := i + #1
 LABEL label9 :
-t43 := i
-t44 := n
-IF t43 < t44 GOTO label10
+t_v43 := i
+t_v44 := n
+IF t_v43 < t_v44 GOTO label10
 GOTO label11
 LABEL label10 :
-t47 := i
-t48 := #0
-t49 := t47 * #4
-t48 := t48 + t49
-t50 := &height + t48
-t45 := *t50
-t46 := lh
-IF t45 < t46 GOTO label12
+t_v48 := i * #4
+t_v49 := #0 + t_v48
+t_v50 := &height + t_v49
+t_v45 := *t_v50
+t_v46 := lh
+IF t_v45 < t_v46 GOTO label12
 GOTO label13
 LABEL label12 :
-t52 := thisPool
-t54 := lh
-t56 := i
-t57 := #0
-t58 := t56 * #4
-t57 := t57 + t58
-t59 := &height + t57
-t55 := *t59
-t53 := t54 - t55
-t51 := t52 + t53
-thisPool := t51
+t_v57 := i * #4
+t_v58 := #0 + t_v57
+t_v59 := &height + t_v58
+t_v55 := *t_v59
+t_v53 := lh - t_v55
+thisPool := thisPool + t_v53
 GOTO label14
 LABEL label13 :
-t61 := count
-t62 := thisPool
-t60 := t61 + t62
-count := t60
-t64 := i
-t65 := #0
-t66 := t64 * #4
-t65 := t65 + t66
-t67 := &height + t65
-t63 := *t67
-lh := t63
+count := count + thisPool
+t_v65 := i * #4
+t_v66 := #0 + t_v65
+t_v67 := &height + t_v66
+t_v63 := *t_v67
+lh := t_v63
 lIndex := i
 thisPool := #0
 LABEL label14 :
-t71 := i
-t72 := #1
-t70 := t71 + t72
-i := t70
+i := i + #1
 GOTO label9
 LABEL label11 :
 thisPool := #0
 rh := #0
-t76 := n
-t77 := #1
-t75 := t76 - t77
-i := t75
+i := n - #1
 LABEL label15 :
-t78 := i
-t79 := lIndex
-IF t78 > t79 GOTO label18
+t_v78 := i
+t_v79 := lIndex
+IF t_v78 > t_v79 GOTO label18
 GOTO label17
 LABEL label18 :
-t82 := i
-t83 := #0
-t84 := t82 * #4
-t83 := t83 + t84
-t85 := &height + t83
-t80 := *t85
-t81 := #0
-IF t80 == t81 GOTO label16
+t_v83 := i * #4
+t_v84 := #0 + t_v83
+t_v85 := &height + t_v84
+t_v80 := *t_v85
+t_v81 := #0
+IF t_v80 == t_v81 GOTO label16
 GOTO label17
 LABEL label16 :
-t87 := i
-t88 := #1
-t86 := t87 - t88
-i := t86
+i := i - #1
 GOTO label15
 LABEL label17 :
-t90 := i
-t91 := #0
-t92 := t90 * #4
-t91 := t91 + t92
-t93 := &height + t91
-t89 := *t93
-rh := t89
-t95 := i
-t96 := #1
-t94 := t95 - t96
-i := t94
+t_v91 := i * #4
+t_v92 := #0 + t_v91
+t_v93 := &height + t_v92
+t_v89 := *t_v93
+rh := t_v89
+i := i - #1
 LABEL label19 :
-t97 := i
-t98 := lIndex
-IF t97 > t98 GOTO label20
+t_v97 := i
+t_v98 := lIndex
+IF t_v97 > t_v98 GOTO label20
 GOTO label21
 LABEL label20 :
-t101 := i
-t102 := #0
-t103 := t101 * #4
-t102 := t102 + t103
-t104 := &height + t102
-t99 := *t104
-t100 := rh
-IF t99 < t100 GOTO label22
+t_v102 := i * #4
+t_v103 := #0 + t_v102
+t_v104 := &height + t_v103
+t_v99 := *t_v104
+t_v100 := rh
+IF t_v99 < t_v100 GOTO label22
 GOTO label23
 LABEL label22 :
-t106 := thisPool
-t108 := rh
-t110 := i
-t111 := #0
-t112 := t110 * #4
-t111 := t111 + t112
-t113 := &height + t111
-t109 := *t113
-t107 := t108 - t109
-t105 := t106 + t107
-thisPool := t105
+t_v111 := i * #4
+t_v112 := #0 + t_v111
+t_v113 := &height + t_v112
+t_v109 := *t_v113
+t_v107 := rh - t_v109
+thisPool := thisPool + t_v107
 GOTO label24
 LABEL label23 :
-t115 := count
-t116 := thisPool
-t114 := t115 + t116
-count := t114
-t118 := i
-t119 := #0
-t120 := t118 * #4
-t119 := t119 + t120
-t121 := &height + t119
-t117 := *t121
-rh := t117
+count := count + thisPool
+t_v119 := i * #4
+t_v120 := #0 + t_v119
+t_v121 := &height + t_v120
+t_v117 := *t_v121
+rh := t_v117
 thisPool := #0
 LABEL label24 :
-t124 := i
-t125 := #1
-t123 := t124 - t125
-i := t123
+i := i - #1
 GOTO label19
 LABEL label21 :
-t127 := count
-t128 := thisPool
-t126 := t127 + t128
-RETURN t126
+t_v126 := count + thisPool
+RETURN t_v126
 FUNCTION main :
-t129 := CALL trap
-t130 := t129
-WRITE t130
-t131 := #0
-RETURN t131
+t_v129 := CALL trap
+result := t_v129
+t_v130 := result
+WRITE t_v130
+t_v131 := #0
+RETURN t_v131

@@ -8,18 +8,14 @@ y := t_v8 + #1
 t_v13 := x / b
 t_v14 := b * y
 z := t_v13 + t_v14
-t_v19 := z
 WRITE t_v19
 t_v22 := z * #2
 c := t + t_v22
-t_v25 := c
 WRITE t_v25
 t_v31 := x + b
 t_v29 := t_v31 + y
 t_v30 := x / c
 t_v27 := t_v29 + t_v30
 t := t_v27 + t
-t_v37 := t
 WRITE t_v37
-t_v38 := #0
 RETURN t_v38

@@ -1,108 +1,89 @@
 FUNCTION main :
 DEC x 20
-t0 := #0
-i := t0
-LABEL t1 :
-t4 := i
-t5 := #5
-IF t4 < t5 GOTO t2
-GOTO t3
-LABEL t2 :
-READ t6
-t7 := i
-t8 := t7 * #4
-t9 := &x + t8
-*t9 := t6
-t10 := *t9
-t12 := i
-t13 := #1
-t11 := t12 + t13
-i := t11
-GOTO t1
-LABEL t3 :
-t14 := #1
-i := t14
-LABEL t15 :
-t18 := i
-t19 := #5
-IF t18 < t19 GOTO t16
-GOTO t17
-LABEL t16 :
-t20 := i
-j := t20
-LABEL t21 :
-t25 := j
-t26 := #0
-IF t25 > t26 GOTO t24
-GOTO t23
-LABEL t24 :
-t30 := j
-t31 := #1
-t29 := t30 - t31
-t32 := t29 * #4
-t33 := &x + t32
-t27 := *t33
-t34 := j
-t35 := t34 * #4
-t36 := &x + t35
-t28 := *t36
-IF t27 > t28 GOTO t22
-GOTO t23
-LABEL t22 :
-t38 := j
-t39 := t38 * #4
-t40 := &x + t39
-t37 := *t40
-tem := t37
-t43 := j
-t44 := #1
-t42 := t43 - t44
-t45 := t42 * #4
-t46 := &x + t45
-t41 := *t46
-t47 := j
-t48 := t47 * #4
-t49 := &x + t48
-*t49 := t41
-t50 := *t49
-t51 := tem
-t53 := j
-t54 := #1
-t52 := t53 - t54
-t55 := t52 * #4
-t56 := &x + t55
-*t56 := t51
-t57 := *t56
-t59 := j
-t60 := #1
-t58 := t59 - t60
-j := t58
-GOTO t21
-LABEL t23 :
-t62 := i
-t63 := #1
-t61 := t62 + t63
-i := t61
-GOTO t15
-LABEL t17 :
-t64 := #0
-i := t64
-LABEL t65 :
-t68 := i
-t69 := #5
-IF t68 < t69 GOTO t66
-GOTO t67
-LABEL t66 :
-t71 := i
-t72 := t71 * #4
-t73 := &x + t72
-t70 := *t73
-WRITE t70
-t75 := i
-t76 := #1
-t74 := t75 + t76
-i := t74
-GOTO t65
-LABEL t67 :
-t77 := #0
-RETURN t77
+i := #0
+LABEL label0 :
+t_v1 := i
+t_v2 := #5
+IF t_v1 < t_v2 GOTO label1
+GOTO label2
+LABEL label1 :
+READ t_v3
+t_v5 := i * #4
+t_v6 := #0 + t_v5
+t_v7 := &x + t_v6
+*t_v7 := t_v3
+t_v8 := *t_v7
+i := i + #1
+GOTO label0
+LABEL label2 :
+i := #1
+LABEL label3 :
+t_v13 := i
+t_v14 := #5
+IF t_v13 < t_v14 GOTO label4
+GOTO label5
+LABEL label4 :
+j := i
+LABEL label6 :
+t_v16 := j
+t_v17 := #0
+IF t_v16 > t_v17 GOTO label9
+GOTO label8
+LABEL label9 :
+t_v20 := j - #1
+t_v23 := t_v20 * #4
+t_v24 := #0 + t_v23
+t_v25 := &x + t_v24
+t_v18 := *t_v25
+t_v27 := j * #4
+t_v28 := #0 + t_v27
+t_v29 := &x + t_v28
+t_v19 := *t_v29
+IF t_v18 > t_v19 GOTO label7
+GOTO label8
+LABEL label7 :
+t_v32 := j * #4
+t_v33 := #0 + t_v32
+t_v34 := &x + t_v33
+t_v30 := *t_v34
+tem := t_v30
+t_v36 := j - #1
+t_v39 := t_v36 * #4
+t_v40 := #0 + t_v39
+t_v41 := &x + t_v40
+t_v35 := *t_v41
+t_v43 := j * #4
+t_v44 := #0 + t_v43
+t_v45 := &x + t_v44
+*t_v45 := t_v35
+t_v46 := *t_v45
+t_v47 := tem
+t_v48 := j - #1
+t_v51 := t_v48 * #4
+t_v52 := #0 + t_v51
+t_v53 := &x + t_v52
+*t_v53 := t_v47
+t_v54 := *t_v53
+j := j - #1
+GOTO label6
+LABEL label8 :
+i := i + #1
+GOTO label3
+LABEL label5 :
+i := #0
+LABEL label10 :
+t_v62 := i
+t_v63 := #5
+IF t_v62 < t_v63 GOTO label11
+GOTO label12
+LABEL label11 :
+t_v66 := i * #4
+t_v67 := #0 + t_v66
+t_v68 := &x + t_v67
+t_v64 := *t_v68
+WRITE t_v64
+i := i + #1
+GOTO label10
+LABEL label12 :
+t_v72 := #0
+RETURN t_v72
